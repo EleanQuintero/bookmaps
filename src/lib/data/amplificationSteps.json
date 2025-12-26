@@ -1,0 +1,19 @@
+{
+  "amplificationSteps": [
+    {
+      "cardTitle": "Complete Path",
+      "cardIcon": "map-alt",
+      "cardDescription": "From beginner to advanced"
+    },
+    {
+      "cardTitle": "Exact Order",
+      "cardIcon": "book-open",
+      "cardDescription": "  Books in the right sequence"
+    },
+    {
+      "cardTitle": "No Fluff",
+      "cardIcon": "check-circle",
+      "cardDescription": "Just the optimal progression"
+    }
+  ]
+}
