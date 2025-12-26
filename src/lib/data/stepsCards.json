@@ -1,0 +1,19 @@
+{
+  "stepsCardsData": [
+    {
+      "cardTitle": " 1. Choose a Topic",
+      "cardDescription": "Enter any subject you want to master, from History to Coding.",
+      "cardIcon": "search"
+    },
+    {
+      "cardTitle": " 2. Generate Your Map",
+      "cardDescription": "With a click, get a personalized learning path tailored to your needs.",
+      "cardIcon": "map"
+    },
+    {
+      "cardTitle": " 3. Start Learning",
+      "cardDescription": "Follow your map, explore resources, and track your progress easily.",
+      "cardIcon": "trophy"
+    }
+  ]
+}
