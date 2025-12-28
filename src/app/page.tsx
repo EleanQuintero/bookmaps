@@ -2,6 +2,7 @@ import { CTA } from "@/components/landing/CTA";
 import { Hero } from "@/components/landing/Hero";
 import { HowItWorks } from "@/components/landing/HowItWorks";
 import { Paas } from "@/components/landing/Paas";
+import Footer from "@/components/ui/footer";
 
 export default function Home() {
   return (
@@ -25,7 +26,7 @@ export default function Home() {
         id="footer"
         className="px-4 py-8 text-center text-sm text-muted-foreground"
       >
-        &copy; {new Date().getFullYear()} BookMaps. All rights reserved.
+        <Footer />
       </section>
     </main>
   );
