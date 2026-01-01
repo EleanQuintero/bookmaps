@@ -1,5 +1,3 @@
-import { Button } from "../ui/button";
-
 export const CTA = () => {
   const exampleTopics = [
     "Stoic Philosophy",
@@ -17,16 +15,18 @@ export const CTA = () => {
 
         {/* CTA Buttons */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-          <Button
-            size="lg"
-            variant="outline"
-            className="w-full sm:w-auto px-8 h-12 text-base"
+          <a
+            href="/auth"
+            className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-base font-medium transition-all outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 w-full sm:w-auto px-8 h-12"
           >
             Log In
-          </Button>
-          <Button size="lg" className="w-full sm:w-auto px-8 h-12 text-base">
+          </a>
+          <a
+            href="/auth"
+            className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-base font-medium transition-all outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] bg-primary text-primary-foreground hover:bg-primary/90 w-full sm:w-auto px-8 h-12"
+          >
             Create Account
-          </Button>
+          </a>
         </div>
 
         {/* Example Topics */}
