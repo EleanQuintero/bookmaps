@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Mail, Lock, ArrowRight, User } from "lucide-react";
-import { login, signUp } from "../functions/auth";
+import { login, signUp } from "../actions/auth";
 
 interface AuthFormProps {
   isSignUp: boolean;
