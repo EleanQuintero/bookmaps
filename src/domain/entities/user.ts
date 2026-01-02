@@ -8,3 +8,6 @@ interface User {
 
 export type newUser = Omit<User, 'createdAt' | 'profilePictureUrl'>;
 export type loginUser = Pick<User, 'email' | 'password'>;
+export type authenticatedUser = Pick<User, 'email' | 'username'> & {
+    id: string
+}
