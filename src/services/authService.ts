@@ -2,8 +2,6 @@ import { loginUser, newUser } from "@/domain/entities/user"
 import { createClient } from "@/lib/supabase/server"
 
 
-
-
 export async function signUp({ username, email, password }: newUser) {
 
     const supabase = await createClient()
@@ -20,10 +18,10 @@ export async function signUp({ username, email, password }: newUser) {
     })
 
     if (error) {
-        throw error
+        return { data: null, error: error.message }
     }
 
-    return data
+    return { data, error: null }
 }
 
 export async function signIn({ email, password }: loginUser) {
@@ -39,9 +37,25 @@ export async function signIn({ email, password }: loginUser) {
     })
 
     if (error) {
-        throw error
+        return { data: null, error: error.message }
     }
 
-    return data
+    return { data, error: null }
 
+}
+
+export async function signOut() {
+    const supabase = await createClient()
+
+    const { error } = await supabase.auth.signOut()
+    return error
+
+}
+
+export async function getCurrentUserData() {
+    const supabase = await createClient()
+
+    const currentUserData = await supabase.auth.getUser()
+
+    return currentUserData
 }

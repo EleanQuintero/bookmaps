@@ -1,34 +1,45 @@
 "use server"
-
-import { createUser, signInUser } from "@/controllers/userController";
+import { createUser, getCurrentUser, signInUser, signOutUser } from "@/controllers/authController";
 import { loginUser, newUser } from "@/domain/entities/user";
+import { redirect } from "next/navigation";
+
 
 export async function login({ email, password }: loginUser) {
-    try {
-        const session = await signInUser({ email, password })
+    const result = await signInUser({ email, password })
 
-        console.log(session)
-    } catch (error) {
-
+    if (result.error) {
+        return { success: false, error: result.error }
     }
-    console.log("Logging in user: ", email);
+
+    redirect('/dashboard')
 
 }
 
 export async function signUp({ username, email, password }: newUser) {
-    try {
-        const userData = await createUser({ username, email, password })
 
-        console.log("User signed up: ", userData);
+    const result = await createUser({ username, email, password })
 
-
-    } catch (error) {
-        console.log("Failed to sign up user with email: ", email);
-        const errorMessage = "Error signing up user: "
-        return errorMessage
-
+    if (result.error) {
+        return { success: false, error: result.error }
     }
 
+}
+
+export async function signOut() {
+    const error = await signOutUser()
+    redirect('/')
+
+}
+
+export async function getUser() {
+    try {
+        const user = await getCurrentUser()
+
+        return user
+
+    } catch (error) {
+
+    }
 }
 
 
