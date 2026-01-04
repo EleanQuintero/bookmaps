@@ -23,16 +23,12 @@ export async function signOutUser() {
 
 
 export async function getCurrentUser() {
-    try {
-        const { data } = await getCurrentUserData()
+    const { data } = await getCurrentUserData()
 
-        const user = {
-            id: data.user?.id,
-            email: data.user?.email,
-            username: data.user?.user_metadata.username
-        }
-        return user
-    } catch (error) {
-        console.log("error getting the user")
+    const user = {
+        id: data.user?.id,
+        email: data.user?.email,
+        username: data.user?.user_metadata.username
     }
-}
+    return user
+} 
