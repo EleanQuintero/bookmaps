@@ -10,7 +10,11 @@ import {
   ArrowRight,
 } from "lucide-react";
 
-function Dashboard() {
+interface DashboardProps {
+  username: string;
+}
+
+function Dashboard({ username }: DashboardProps) {
   return (
     <section className="flex flex-col h-screen items-center justify-center overflow-hidden bg-primary-foreground text-primary ">
       <main className="">
@@ -23,7 +27,7 @@ function Dashboard() {
                 <span>Your Learning Dashboard</span>
               </div>
               <h1 className="text-4xl font-bold tracking-tight">
-                Welcome back, John
+                 {`Welcome Back ${username}`}
               </h1>
               <p className="text-muted-foreground text-lg">{}</p>
             </header>
