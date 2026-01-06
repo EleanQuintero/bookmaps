@@ -1,5 +1,5 @@
 import { CTA } from "@/components/landing/CTA";
-import { Hero } from "@/components/landing/Hero";
+import { Hero } from "@/components/Hero";
 import { HowItWorks } from "@/components/landing/HowItWorks";
 import { Paas } from "@/components/landing/Paas";
 import Footer from "@/components/ui/footer";
@@ -11,7 +11,12 @@ export default function Home() {
         id="hero"
         className="flex flex-col items-center justify-center px-4 pt-20 pb-16 text-center"
       >
-        <Hero />
+        <Hero
+          minTitle="AI-Powered Learning Paths"
+          title="Master any topic with"
+          description="Stop guessing what to read next. We curate the perfect journey from
+          beginner to expert."
+        />
       </section>
       <section id="how-works" className="px-4 py-16 border-b border-border/40">
         <HowItWorks />
