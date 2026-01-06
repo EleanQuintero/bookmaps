@@ -10,10 +10,13 @@ import { useState } from "react";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import InputForm from "@/app/dashboard/create/components/form/inputForm";
+import { getMockIABookmapData } from "@/app/auth/actions/IA/IA";
 
 export const GenerateForm = () => {
-  function send(data: GeneratorValues) {
-    console.log(data);
+  async function send(data: GeneratorValues) {
+    const response = await getMockIABookmapData(data.theme);
+
+    console.log(response);
 
     const error = false;
 
