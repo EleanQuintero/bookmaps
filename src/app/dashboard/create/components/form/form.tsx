@@ -91,12 +91,12 @@ export const GenerateForm = () => {
 
         <Button
           type="submit"
-          className="w-full h-12 font-semibold shadow-md"
+          className="w-full h-12 font-bold shadow-md"
           size="lg"
           disabled={isSubmitting}
         >
           <Sparkles className="mr-2 h-5 w-5" />
-          {isSubmitting ? "Enviando Datos..." : "Generar BookMap"}
+          {isSubmitting ? "Looking for books..." : "Call the librarian"}
         </Button>
 
         {submitStatus.type && (
