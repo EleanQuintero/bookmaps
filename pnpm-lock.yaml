@@ -9,7 +9,7 @@ importers:
   .:
     dependencies:
       '@hookform/resolvers':
-        specifier: ^5.2.2
+        specifier: 5.2.2
         version: 5.2.2(react-hook-form@7.70.0(react@19.2.3))
       '@radix-ui/react-dialog':
         specifier: 1.1.15
@@ -51,13 +51,13 @@ importers:
         specifier: 19.2.3
         version: 19.2.3(react@19.2.3)
       react-hook-form:
-        specifier: ^7.70.0
+        specifier: 7.70.0
         version: 7.70.0(react@19.2.3)
       tailwind-merge:
         specifier: 3.4.0
         version: 3.4.0
       zod:
-        specifier: ^4.3.5
+        specifier: 4.3.5
         version: 4.3.5
     devDependencies:
       '@tailwindcss/postcss':
@@ -82,7 +82,7 @@ importers:
         specifier: 16.1.1
         version: 16.1.1(@typescript-eslint/parser@8.50.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
       tailwindcss:
-        specifier: '4'
+        specifier: 4.1.18
         version: 4.1.18
       tw-animate-css:
         specifier: 1.4.0

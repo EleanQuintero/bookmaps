@@ -1,6 +1,6 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { PlusSquare, Sparkles } from "lucide-react";
-import GenerateForm from "./components/form/form";
+import { GenerateForm } from "@/app/dashboard/create/components/form/form";
 
 export default function BookmapCreator() {
   const exampleTopics = [

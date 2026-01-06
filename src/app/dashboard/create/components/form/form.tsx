@@ -11,7 +11,7 @@ import { useForm, type SubmitHandler } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import InputForm from "@/app/dashboard/create/components/form/inputForm";
 
-const GenerateForm = () => {
+export const GenerateForm = () => {
   function send(data: GeneratorValues) {
     console.log(data);
 
@@ -114,5 +114,3 @@ const GenerateForm = () => {
     </form>
   );
 };
-
-export default GenerateForm;
