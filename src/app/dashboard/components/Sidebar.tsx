@@ -32,7 +32,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { log } from "node:console";
 
 interface SidbarProps {
   username: string;
@@ -46,22 +45,22 @@ const platformItems = [
     icon: Home,
   },
   {
-    title: "Mis Mapas",
-    url: "/dashboard/maps",
+    title: "New Map",
+    url: "/dashboard/create",
     icon: Map,
   },
   {
-    title: "Biblioteca",
+    title: "Library ",
     url: "/dashboard/library",
     icon: Library,
   },
   {
-    title: "Estadísticas",
+    title: "Stats",
     url: "/dashboard/stats",
     icon: BarChart3,
   },
   {
-    title: "Configuración",
+    title: "Settings",
     url: "/dashboard/settings",
     icon: Settings,
   },
