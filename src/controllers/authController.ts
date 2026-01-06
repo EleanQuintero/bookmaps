@@ -1,4 +1,4 @@
-import { loginUser, newUser } from "@/domain/entities/user";
+import { loginUser, newUser } from "@/domain/entities/users/user";
 import { signUp, signIn, getCurrentUserData, signOut } from "@/services/authService";
 
 export async function createUser({ username, email, password }: newUser) {
