@@ -1,4 +1,4 @@
-import { getUser } from "../auth/actions/auth";
+import { getUser } from "../auth/actions/auth/auth";
 import DashboardPage from "./components/Dashboard";
 
 async function dashboard() {

@@ -1,6 +1,6 @@
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/app/dashboard/components/Sidebar";
-import { signOut, getUser } from "@/app/auth/actions/auth";
+import { signOut, getUser } from "@/app/auth/actions/auth/auth";
 
 export default async function DashboardLayout({
   children,
