@@ -1,5 +1,5 @@
-import { loginUser, newUser } from "@/domain/entities/user";
-import { signUp, signIn, getCurrentUserData, signOut } from "@/services/authService";
+import { loginUser, newUser } from "@/domain/entities/users/user";
+import { signUp, signIn, getCurrentUserData, signOut } from "@/services/auth/authService";
 
 export async function createUser({ username, email, password }: newUser) {
     const result = await signUp({ username, email, password })

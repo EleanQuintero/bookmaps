@@ -1,4 +1,4 @@
-import { loginUser, newUser } from "@/domain/entities/user"
+import { loginUser, newUser } from "@/domain/entities/users/user"
 import { createClient } from "@/lib/supabase/server"
 
 

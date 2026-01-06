@@ -1,6 +1,6 @@
 import { Input } from "@/components/ui/input";
 import { Mail, Lock, User } from "lucide-react";
-import { signUp } from "../actions/auth";
+import { signUp } from "../actions/auth/auth";
 import { useState } from "react";
 
 function SignUpForm({ children }: Readonly<{ children: React.ReactNode }>) {

@@ -14,7 +14,7 @@ interface DashboardProps {
   username: string;
 }
 
-function Dashboard({ username }: DashboardProps) {
+function DashboardPage({ username }: DashboardProps) {
   return (
     <section className="flex flex-col h-screen items-center justify-center overflow-hidden bg-primary-foreground text-primary ">
       <main className="">
@@ -144,4 +144,4 @@ function Dashboard({ username }: DashboardProps) {
   );
 }
 
-export default Dashboard;
+export default DashboardPage;

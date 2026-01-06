@@ -1,6 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { PlusSquare, Sparkles } from "lucide-react";
-import GenerateForm from "./components/form/form";
+import { GenerateForm } from "@/app/dashboard/create/components/form/form";
+import { Hero } from "@/components/Hero";
 
 export default function BookmapCreator() {
   const exampleTopics = [
@@ -16,17 +17,11 @@ export default function BookmapCreator() {
     <section className="flex flex-col h-screen items-center justify-center overflow-hidden bg-primary-foreground text-primary ">
       <div className="container max-w-6xl mx-auto p-6 space-y-8">
         <header className="flex flex-col  items-center gap-3">
-          <div className="h-12 w-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
-            <PlusSquare className="h-6 w-6" />
-          </div>
-          <div>
-            <h1 className="text-3xl font-bold tracking-tight">
-              Create New BookMap
-            </h1>
-            <p className="text-muted-foreground mt-1">
-              Generate a structured reading path for any topic
-            </p>
-          </div>
+          <Hero
+            title="Create New BookMap"
+            description="Generate a structured reading path for any topic"
+            minTitle="Your Learning Journey Starts Here"
+          />
         </header>
 
         <Card className="border-primary/20 bg-primary/5 shadow-sm max-w-3xl mx-auto">

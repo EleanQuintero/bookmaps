@@ -1,6 +1,6 @@
 "use server"
-import { createUser, getCurrentUser, signInUser, signOutUser } from "@/controllers/authController";
-import { loginUser, newUser } from "@/domain/entities/user";
+import { createUser, getCurrentUser, signInUser, signOutUser } from "@/controllers/auth/authController";
+import { loginUser, newUser } from "@/domain/entities/users/user";
 import { redirect } from "next/navigation";
 
 

@@ -10,10 +10,13 @@ import { useState } from "react";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import InputForm from "@/app/dashboard/create/components/form/inputForm";
+import { getMockIABookmapData } from "@/app/auth/actions/IA/IA";
 
-const GenerateForm = () => {
-  function send(data: GeneratorValues) {
-    console.log(data);
+export const GenerateForm = () => {
+  async function send(data: GeneratorValues) {
+    const response = await getMockIABookmapData(data.theme);
+
+    console.log(response);
 
     const error = false;
 
@@ -91,12 +94,12 @@ const GenerateForm = () => {
 
         <Button
           type="submit"
-          className="w-full h-12 font-semibold shadow-md"
+          className="w-full h-12 font-bold shadow-md"
           size="lg"
           disabled={isSubmitting}
         >
           <Sparkles className="mr-2 h-5 w-5" />
-          {isSubmitting ? "Enviando Datos..." : "Generar BookMap"}
+          {isSubmitting ? "Looking for books..." : "Call the librarian"}
         </Button>
 
         {submitStatus.type && (
@@ -114,5 +117,3 @@ const GenerateForm = () => {
     </form>
   );
 };
-
-export default GenerateForm;

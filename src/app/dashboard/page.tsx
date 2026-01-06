@@ -1,10 +1,10 @@
-import { getUser } from "../auth/actions/auth";
-import Dashboard from "./components/Dashboard";
+import { getUser } from "../auth/actions/auth/auth";
+import DashboardPage from "./components/Dashboard";
 
 async function dashboard() {
   const user = await getUser();
 
-  return <Dashboard username={user?.username} />;
+  return <DashboardPage username={user?.username} />;
 }
 
 export default dashboard;
