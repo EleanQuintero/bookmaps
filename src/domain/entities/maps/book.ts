@@ -11,4 +11,11 @@ export interface Book {
     next_path: string;
 }
 
-export type bookIAData = Omit<Book, 'ISBN' | 'google_books_id' | 'coverURL'>; 
+export type bookIAData = Omit<Book, 'ISBN' | 'google_books_id' | 'coverURL'>;
+
+export type bookProcesed = Pick<Book, 'ISBN' | 'title' | 'author' | 'coverURL'> & {
+    description: string
+    totalPages: number
+    rating?: number
+
+}
