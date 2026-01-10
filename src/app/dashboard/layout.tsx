@@ -1,17 +1,18 @@
+import { Suspense } from "react";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { AppSidebar } from "@/app/dashboard/components/Sidebar";
-import { signOut, getUser } from "@/app/auth/actions/auth/auth";
+import { SidebarWithUser } from "@/app/dashboard/components/SidebarWithUser";
+import { SidebarSkeleton } from "@/app/dashboard/components/SidebarSkeleton";
 
-export default async function DashboardLayout({
+export default function DashboardLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const user = await getUser();
-
   return (
     <SidebarProvider>
-      <AppSidebar username={user?.username} logout={signOut} />
+      <Suspense fallback={<SidebarSkeleton />}>
+        <SidebarWithUser />
+      </Suspense>
       <main className="flex-1 w-full min-h-screen bg-black">
         <div className="p-4">
           <SidebarTrigger />
