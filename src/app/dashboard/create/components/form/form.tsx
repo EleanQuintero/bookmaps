@@ -10,29 +10,20 @@ import { useState } from "react";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import InputForm from "@/app/dashboard/create/components/form/inputForm";
-import { getMockIABookmapData } from "@/app/auth/actions/IA/IA";
-import { getFullBook } from "@/app/auth/actions/books/books";
+import { getBookMap, getMockIABookmapData } from "@/app/actions/IA/IA";
+import { getFullBook } from "@/app/actions/books/books";
 
 export const GenerateForm = () => {
   async function send(data: GeneratorValues) {
-    const response = await getMockIABookmapData(data.theme);
+    const response = await getBookMap(data.theme);
 
-    const librosDesarrolloPersonal = [
-      "Hábitos Atómicos",
-      "Cómo ganar amigos e influir sobre las personas",
-      "Los 7 hábitos de la gente altamente efectiva",
-      "El poder del ahora",
-      "Piense y hágase rico",
-      "Enfócate (Deep Work)",
-      "El sutil arte de que casi todo te importe una mierda",
-      "Mindset: La actitud del éxito",
-      "Padre Rico, Padre Pobre",
-      "El monje que vendió su Ferrari",
-    ];
+    const { books } = response;
 
-    const books = getFullBook(librosDesarrolloPersonal);
+    const titles = books.map((book) => book.title);
 
-    console.log(response);
+    const finalBooks = await getFullBook(titles);
+
+    console.log(finalBooks);
 
     const error = false;
 

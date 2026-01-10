@@ -1,6 +1,6 @@
 import { Input } from "@/components/ui/input";
 import { Mail, Lock } from "lucide-react";
-import { login } from "../actions/auth/auth";
+import { login } from "../../actions/auth/auth";
 import { useState } from "react";
 
 function SignInForm({
