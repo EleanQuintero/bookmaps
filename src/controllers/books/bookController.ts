@@ -1,41 +1,61 @@
-import { bookProcesed } from "@/domain/entities/maps/book";
 import { getBooks } from "@/services/books/bookService";
+import { BookAPIRes } from "@/domain/entities/bookAPI/bookResponse";
+import { BookInsert } from "@/domain/entities/models/models";
 
-export async function getProcesedBooks(titleToSearch: string) {
+
+export async function getProcesedBooks(titleToSearch: string): Promise<BookInsert | null> {
     try {
-        const rawData = await getBooks(titleToSearch)
+
+        const rawData: BookAPIRes = await getBooks(titleToSearch);
 
         if (!rawData.items || rawData.items.length === 0) {
-            console.warn(`No se encontraron resultados para: ${titleToSearch}`)
-            return null // En lugar de throw
+            console.warn(`⚠️ Google Books: No se encontraron resultados para: "${titleToSearch}"`);
+            return null;
         }
 
-        const item = rawData.items[0].volumeInfo
+        const volume = rawData.items[0];
+        const info = volume.volumeInfo;
 
-        if (!item.industryIdentifiers || item.industryIdentifiers.length === 0) {
-            console.warn(`El libro "${item.title}" no tiene ISBN, omitiendo...`)
-            return null // En lugar de throw
+        // 2. Extracción de ISBN (Prioridad: ISBN_13 > ISBN_10 > Cualquiera)
+        const identifiers = info.industryIdentifiers || [];
+        const isbnObj = identifiers.find(id => id.type === 'ISBN_13')
+            || identifiers.find(id => id.type === 'ISBN_10')
+            || identifiers[0];
+
+        if (!isbnObj) {
+            console.warn(`⚠️ El libro "${info.title}" no tiene ISBN válido. Omitiendo.`);
+            return null;
         }
 
-        const { description, industryIdentifiers, pageCount, averageRating, imageLinks, title, authors } = item
-
-        const procesedBook: bookProcesed = {
-            title: title,
-            author: authors[0] ?? "Autor Desconocido",
-            coverURL: imageLinks.thumbnail ?? "No poseemos imagen para este titulo",
-            ISBN: industryIdentifiers[0].identifier,
-            totalPages: pageCount,
-            description: description ?? "",
-            rating: averageRating
+        let coverUrl = info.imageLinks?.thumbnail || info.imageLinks?.smallThumbnail || null;
+        if (coverUrl && coverUrl.startsWith('http:')) {
+            coverUrl = coverUrl.replace('http:', 'https:');
         }
-        return procesedBook
+
+
+        const publishedDateStr = info.publishedDate ? String(info.publishedDate) : null;
+
+        // 5. Construcción del objeto final (Mapeo a Snake Case)
+        const procesedBook: BookInsert = {
+            // IDs
+            isbn: isbnObj.identifier,
+            google_id: volume.id,
+
+            // Metadatos
+            title: info.title,
+            author: info.authors?.[0] ?? "Autor Desconocido", // Tomamos el primer autor
+            description: info.description ?? null,
+
+            // Campos opcionales / Nullables
+            cover_url: coverUrl,
+            page_count: info.pageCount ?? null,
+            published_date: publishedDateStr,
+        };
+
+        return procesedBook;
 
     } catch (error) {
-        console.error(`Error procesando libro "${titleToSearch}":`, error)
-        return null
+        console.error(`❌ Error crítico procesando libro "${titleToSearch}":`, error);
+        return null;
     }
-
-
-
-
 }
