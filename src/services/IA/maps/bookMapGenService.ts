@@ -1,6 +1,6 @@
 import { google } from '@ai-sdk/google';
 import { generateText, Output } from 'ai';
-import { iaBookmapSchema } from "@/domain/schemes/maps/bookmap-scheme"
+import { aiMapResponseSchema } from "@/domain/schemes/maps/bookmap-scheme"
 import { systemPrompt } from './prompt';
 
 class MapGeneratorService {
@@ -11,7 +11,7 @@ class MapGeneratorService {
             model: google('gemini-2.0-flash'),
             prompt: `Genera una ruta de aprendizaje incremental sobre: ${theme}`,
             system: systemPrompt,
-            output: Output.object({ schema: iaBookmapSchema })
+            output: Output.object({ schema: aiMapResponseSchema })
 
         })
 
