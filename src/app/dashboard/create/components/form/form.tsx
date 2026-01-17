@@ -10,18 +10,13 @@ import { useState } from "react";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import InputForm from "@/app/dashboard/create/components/form/inputForm";
-import { getBookMap, getMockIABookmapData } from "@/app/actions/IA/IA";
-import { getFullBook } from "@/app/actions/books/books";
+import { getBookMap } from "@/app/actions/IA/IA";
+import { processAndSaveMap } from "@/app/actions/maps/processAndSave";
 
 export const GenerateForm = () => {
   async function send(data: GeneratorValues) {
     const response = await getBookMap(data.theme);
-
-    const { books } = response;
-
-    const titles = books.map((book) => book.title);
-
-    const finalBooks = await getFullBook(titles);
+    const finalBooks = await processAndSaveMap(response, "userid-placeholder");
 
     console.log(finalBooks);
 
