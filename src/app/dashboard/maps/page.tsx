@@ -8,7 +8,6 @@ import {
   ChevronRight,
   Clock,
   Grid,
-  ImageIcon,
   Library,
   List,
   PlusSquare,
@@ -17,114 +16,86 @@ import {
   TrendingUp,
 } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
+import { Skeleton } from "@/components/ui/skeleton";
+import { getMapsData } from "@/controllers/maps/mapController";
+import { Suspense } from "react";
 
-function MyMaps() {
-  const myMaps = [
-    {
-      id: "1",
-      topic: "Stoic Philosophy",
-      progress: 35,
-      totalBooks: 3,
-      completedBooks: 1,
-      lastActive: "2 days ago",
-      status: "in-progress",
-      books: [
-        {
-          title: "Meditations",
-          author: "Marcus Aurelius",
-          coverPlaceholder: true,
-        },
-        {
-          title: "Letters from a Stoic",
-          author: "Seneca",
-          coverPlaceholder: true,
-        },
-        {
-          title: "Discourses",
-          author: "Epictetus",
-          coverPlaceholder: true,
-        },
-      ],
-    },
-    {
-      id: "2",
-      topic: "React Performance",
-      progress: 0,
-      totalBooks: 5,
-      completedBooks: 0,
-      lastActive: "1 week ago",
-      status: "not-started",
-      books: [
-        {
-          title: "React Performance",
-          author: "Various",
-          coverPlaceholder: true,
-        },
-        {
-          title: "Advanced React",
-          author: "Various",
-          coverPlaceholder: true,
-        },
-        {
-          title: "React Patterns",
-          author: "Various",
-          coverPlaceholder: true,
-        },
-      ],
-    },
-    {
-      id: "3",
-      topic: "Financial Literacy",
-      progress: 80,
-      totalBooks: 4,
-      completedBooks: 3,
-      lastActive: "Yesterday",
-      status: "in-progress",
-      books: [
-        {
-          title: "Rich Dad Poor Dad",
-          author: "Robert Kiyosaki",
-          coverPlaceholder: true,
-        },
-        {
-          title: "The Intelligent Investor",
-          author: "Benjamin Graham",
-          coverPlaceholder: true,
-        },
-        {
-          title: "Think and Grow Rich",
-          author: "Napoleon Hill",
-          coverPlaceholder: true,
-        },
-      ],
-    },
-    {
-      id: "4",
-      topic: "History of Rome",
-      progress: 100,
-      totalBooks: 6,
-      completedBooks: 6,
-      lastActive: "2 weeks ago",
-      status: "completed",
-      books: [
-        {
-          title: "SPQR",
-          author: "Mary Beard",
-          coverPlaceholder: true,
-        },
-        {
-          title: "The Roman Empire",
-          author: "Various",
-          coverPlaceholder: true,
-        },
-        {
-          title: "Caesar",
-          author: "Adrian Goldsworthy",
-          coverPlaceholder: true,
-        },
-      ],
-    },
-  ];
+async function MapsPage() {
+  return (
+    <Suspense fallback={<MapsSkeleton />}>
+      <MyMaps />
+    </Suspense>
+  );
+}
+
+function MapsSkeleton() {
+  return (
+    <div className="container max-w-6xl mx-auto p-6 space-y-8">
+      {/* Header Skeleton */}
+      <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="flex items-center gap-3">
+          <Skeleton className="h-12 w-12 rounded-xl" />
+          <div className="space-y-2">
+            <Skeleton className="h-8 w-48" />
+            <Skeleton className="h-4 w-64" />
+          </div>
+        </div>
+        <Skeleton className="h-10 w-32" />
+      </header>
+
+      {/* Search and Filters Skeleton */}
+      <div className="flex items-center gap-4">
+        <Skeleton className="h-10 flex-1 max-w-sm" />
+        <Skeleton className="h-10 w-20" />
+      </div>
+
+      {/* Maps Grid Skeleton */}
+      <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-2">
+        {Array.from({ length: 4 }).map((_, idx) => (
+          <Card key={idx} className="border-border/50">
+            <CardContent className="p-6">
+              {/* Header of card */}
+              <div className="flex justify-between items-start mb-4">
+                <div className="space-y-2 flex-1">
+                  <Skeleton className="h-6 w-3/4" />
+                  <Skeleton className="h-4 w-32" />
+                </div>
+                <Skeleton className="h-11 w-11 rounded-xl" />
+              </div>
+
+              {/* Book Covers Preview Skeleton */}
+              <div className="mb-4 flex gap-2">
+                {Array.from({ length: 3 }).map((_, bookIdx) => (
+                  <Skeleton
+                    key={bookIdx}
+                    className="w-16 h-20 rounded-md flex-shrink-0"
+                  />
+                ))}
+                <Skeleton className="w-16 h-20 rounded-md flex-shrink-0" />
+              </div>
+
+              {/* Progress Section Skeleton */}
+              <div className="space-y-3">
+                <div className="flex justify-between">
+                  <Skeleton className="h-4 w-20" />
+                  <Skeleton className="h-4 w-12" />
+                </div>
+                <Skeleton className="h-2.5 w-full rounded-full" />
+                <div className="flex justify-between items-center pt-1">
+                  <Skeleton className="h-4 w-32" />
+                  <Skeleton className="h-4 w-20" />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+async function MyMaps() {
+  const maps = await getMapsData();
 
   return (
     <div className="container max-w-6xl mx-auto p-6 space-y-8">
@@ -168,7 +139,7 @@ function MyMaps() {
       <div
         className={`grid gap-6 ${"grid-cols-1 md:grid-cols-2 lg:grid-cols-2"}`}
       >
-        {myMaps.map((map) => (
+        {maps.map((map) => (
           <Card
             key={map.id}
             className="group cursor-pointer border-border/50 hover:border-primary/50 hover:shadow-xl transition-all duration-200"
@@ -191,8 +162,8 @@ function MyMaps() {
                           map.status === "completed"
                             ? "bg-green-500/10 text-green-500"
                             : map.status === "in-progress"
-                            ? "bg-blue-500/10 text-blue-500"
-                            : "bg-secondary text-muted-foreground"
+                              ? "bg-blue-500/10 text-blue-500"
+                              : "bg-secondary text-muted-foreground"
                         }
                       `}
                 >
@@ -208,16 +179,26 @@ function MyMaps() {
 
               {/* Book Covers Preview */}
               <div className="mb-4 flex gap-2 overflow-hidden">
-                {map.books.slice(0, 3).map((book, idx) => (
-                  <div
-                    key={idx}
-                    className="relative flex-shrink-0 w-16 h-20 rounded-md bg-gradient-to-br from-secondary to-secondary/50 border border-border/50 flex items-center justify-center group-hover:scale-105 transition-transform"
-                    title={`${book.title} by ${book.author}`}
-                  >
-                    <ImageIcon className="h-6 w-6 text-muted-foreground/40" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-md" />
-                  </div>
-                ))}
+                {map.books
+                  .filter((book) => book.coverURL)
+                  .slice(0, 3)
+                  .map((book, idx) => (
+                    <div
+                      key={idx}
+                      className="relative flex-shrink-0 w-16 h-20 rounded-md bg-gradient-to-br from-secondary to-secondary/50 border border-border/50 overflow-hidden group-hover:scale-105 transition-transform"
+                      title={`${book.title} by ${book.author}`}
+                    >
+                      {book.coverURL ? (
+                        <img
+                          src={book.coverURL}
+                          alt={`${book.title} cover`}
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-md" />
+                      )}
+                    </div>
+                  ))}
                 {map.totalBooks > 3 && (
                   <div className="flex-shrink-0 w-16 h-20 rounded-md bg-secondary/30 border border-border/30 border-dashed flex items-center justify-center">
                     <span className="text-xs font-medium text-muted-foreground">
@@ -254,4 +235,4 @@ function MyMaps() {
   );
 }
 
-export default MyMaps;
+export default MapsPage;
