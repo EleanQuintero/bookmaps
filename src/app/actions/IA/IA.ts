@@ -9,8 +9,6 @@ export async function getBookMap(theme: string): Promise<AIMapResponse> {
 
     const result = await generator.generateBookMap(theme)
 
-    console.log(result)
-
     return result
 
 }
