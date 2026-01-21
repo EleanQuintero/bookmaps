@@ -24,7 +24,7 @@ export const GenerateForm = () => {
     const response = await getBookMap(data.theme);
     const finalBooks = await processAndSaveMap(response);
 
-    const { error, success } = finalBooks;
+    const { error, success, mapId } = finalBooks;
 
     if (error) {
       const result = { success: false, error: { message: error } };
