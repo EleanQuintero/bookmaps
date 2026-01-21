@@ -1,5 +1,6 @@
 import { PendingData } from "@/domain/entities/models/pendingData";
 import { createClient } from "@/lib/supabase/server";
+import { MAP_DETAILS_SELECT, MapDetail, MapDetailCollection } from "../querys/getMapQuerys";
 
 type SupabaseClient = Awaited<ReturnType<typeof createClient>>
 
@@ -51,27 +52,9 @@ class SupabaseRepository {
 
     async getMaps() {
 
-        const { data: maps, error: mapError } = await this.supabaseClient
+        const { data, error: mapError } = await this.supabaseClient
             .from('maps')
-            .select(`
-    id,
-    user_id,
-    title,
-    description,
-    map_items (
-      id,
-      position,
-      status,
-      personal_notes,
-      books (
-        isbn,
-        title,
-        author,
-        cover_url,
-        description
-      )
-    )
-  `)
+            .select(MAP_DETAILS_SELECT)
             .limit(100)
             .order('position', { foreignTable: 'map_items', ascending: true });
 
@@ -79,10 +62,34 @@ class SupabaseRepository {
             return { data: null, error: mapError }
         }
 
+        const maps = data as MapDetailCollection
+
         return { data: maps, error: null }
 
     }
+
+    async getMapById(mapId: string) {
+
+        const { data, error: mapError } = await this.supabaseClient
+            .from('maps')
+            .select(MAP_DETAILS_SELECT)
+            .eq('id', mapId)
+            .order('position', { foreignTable: 'map_items', ascending: true })
+            .single();
+
+
+        if (mapError) {
+            return { data: null, error: mapError }
+        }
+
+        const map = data as MapDetail
+
+        return { data: map, error: null }
+
+    }
+
 }
+
 
 export async function getSupabaseRepo() {
     const client = await createClient()
