@@ -28,7 +28,7 @@ async function MapsPage() {
   );
 }
 
-function MapsSkeleton() {
+export function MapsSkeleton() {
   return (
     <div className="container max-w-6xl mx-auto p-6 space-y-8">
       {/* Header Skeleton */}
@@ -140,23 +140,24 @@ async function MyMaps() {
         className={`grid gap-6 ${"grid-cols-1 md:grid-cols-2 lg:grid-cols-2"}`}
       >
         {maps.map((map) => (
-          <Card
-            key={map.id}
-            className="group cursor-pointer border-border/50 hover:border-primary/50 hover:shadow-xl transition-all duration-200"
-          >
-            <CardContent className="p-6">
-              <div className="flex justify-between items-start mb-4">
-                <div className="space-y-1 flex-1">
-                  <h3 className="font-semibold text-xl group-hover:text-primary transition-colors">
-                    {map.topic}
-                  </h3>
-                  <p className="text-xs text-muted-foreground flex items-center gap-1">
-                    <Clock className="h-3 w-3" />
-                    Last active {map.lastActive}
-                  </p>
-                </div>
-                <div
-                  className={`
+          <a href={`/dashboard/maps/${map.id}`} key={map.id}>
+            <Card
+              key={map.id}
+              className="group cursor-pointer border-border/50 hover:border-primary/50 hover:shadow-xl transition-all duration-200"
+            >
+              <CardContent className="p-6">
+                <div className="flex justify-between items-start mb-4">
+                  <div className="space-y-1 flex-1">
+                    <h3 className="font-semibold text-xl group-hover:text-primary transition-colors">
+                      {map.topic}
+                    </h3>
+                    <p className="text-xs text-muted-foreground flex items-center gap-1">
+                      <Clock className="h-3 w-3" />
+                      Last active {map.lastActive}
+                    </p>
+                  </div>
+                  <div
+                    className={`
                         p-2.5 rounded-xl 
                         ${
                           map.status === "completed"
@@ -166,69 +167,70 @@ async function MyMaps() {
                               : "bg-secondary text-muted-foreground"
                         }
                       `}
-                >
-                  {map.status === "completed" ? (
-                    <Award className="h-5 w-5" />
-                  ) : map.status === "in-progress" ? (
-                    <TrendingUp className="h-5 w-5" />
-                  ) : (
-                    <BookMarked className="h-5 w-5" />
+                  >
+                    {map.status === "completed" ? (
+                      <Award className="h-5 w-5" />
+                    ) : map.status === "in-progress" ? (
+                      <TrendingUp className="h-5 w-5" />
+                    ) : (
+                      <BookMarked className="h-5 w-5" />
+                    )}
+                  </div>
+                </div>
+
+                {/* Book Covers Preview */}
+                <div className="mb-4 flex gap-2 overflow-hidden">
+                  {map.books
+                    .filter((book) => book.coverURL)
+                    .slice(0, 3)
+                    .map((book, idx) => (
+                      <div
+                        key={idx}
+                        className="relative flex-shrink-0 w-16 h-20 rounded-md bg-gradient-to-br from-secondary to-secondary/50 border border-border/50 overflow-hidden group-hover:scale-105 transition-transform"
+                        title={`${book.title} by ${book.author}`}
+                      >
+                        {book.coverURL ? (
+                          <img
+                            src={book.coverURL}
+                            alt={`${book.title} cover`}
+                            className="w-full h-full object-cover"
+                          />
+                        ) : (
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-md" />
+                        )}
+                      </div>
+                    ))}
+                  {map.totalBooks > 3 && (
+                    <div className="flex-shrink-0 w-16 h-20 rounded-md bg-secondary/30 border border-border/30 border-dashed flex items-center justify-center">
+                      <span className="text-xs font-medium text-muted-foreground">
+                        +{map.totalBooks - 3}
+                      </span>
+                    </div>
                   )}
                 </div>
-              </div>
 
-              {/* Book Covers Preview */}
-              <div className="mb-4 flex gap-2 overflow-hidden">
-                {map.books
-                  .filter((book) => book.coverURL)
-                  .slice(0, 3)
-                  .map((book, idx) => (
-                    <div
-                      key={idx}
-                      className="relative flex-shrink-0 w-16 h-20 rounded-md bg-gradient-to-br from-secondary to-secondary/50 border border-border/50 overflow-hidden group-hover:scale-105 transition-transform"
-                      title={`${book.title} by ${book.author}`}
-                    >
-                      {book.coverURL ? (
-                        <img
-                          src={book.coverURL}
-                          alt={`${book.title} cover`}
-                          className="w-full h-full object-cover"
-                        />
-                      ) : (
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-md" />
-                      )}
-                    </div>
-                  ))}
-                {map.totalBooks > 3 && (
-                  <div className="flex-shrink-0 w-16 h-20 rounded-md bg-secondary/30 border border-border/30 border-dashed flex items-center justify-center">
-                    <span className="text-xs font-medium text-muted-foreground">
-                      +{map.totalBooks - 3}
+                <div className="space-y-3">
+                  <div className="flex justify-between text-sm">
+                    <span className="text-muted-foreground flex items-center gap-1">
+                      <Target className="h-3.5 w-3.5" />
+                      Progress
+                    </span>
+                    <span className="font-semibold">{map.progress}%</span>
+                  </div>
+                  <Progress value={map.progress} className="h-2.5" />
+                  <div className="flex justify-between items-center pt-1">
+                    <span className="text-xs text-muted-foreground flex items-center gap-1">
+                      <BookOpen className="h-3.5 w-3.5" />
+                      {map.completedBooks} of {map.totalBooks} books
+                    </span>
+                    <span className="group-hover:translate-x-1 transition-transform flex items-center gap-1 text-primary font-medium text-sm">
+                      Continue <ChevronRight className="h-4 w-4" />
                     </span>
                   </div>
-                )}
-              </div>
-
-              <div className="space-y-3">
-                <div className="flex justify-between text-sm">
-                  <span className="text-muted-foreground flex items-center gap-1">
-                    <Target className="h-3.5 w-3.5" />
-                    Progress
-                  </span>
-                  <span className="font-semibold">{map.progress}%</span>
                 </div>
-                <Progress value={map.progress} className="h-2.5" />
-                <div className="flex justify-between items-center pt-1">
-                  <span className="text-xs text-muted-foreground flex items-center gap-1">
-                    <BookOpen className="h-3.5 w-3.5" />
-                    {map.completedBooks} of {map.totalBooks} books
-                  </span>
-                  <span className="group-hover:translate-x-1 transition-transform flex items-center gap-1 text-primary font-medium text-sm">
-                    Continue <ChevronRight className="h-4 w-4" />
-                  </span>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
+          </a>
         ))}
       </div>
     </div>
