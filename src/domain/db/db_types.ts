@@ -84,7 +84,6 @@ export type Database = {
           level: string | null
           map_id: string
           next_path: string | null
-          personal_notes: string | null
           position: number
           status: Database["public"]["Enums"]["reading_status"] | null
         }
@@ -96,7 +95,6 @@ export type Database = {
           level?: string | null
           map_id: string
           next_path?: string | null
-          personal_notes?: string | null
           position: number
           status?: Database["public"]["Enums"]["reading_status"] | null
         }
@@ -108,7 +106,6 @@ export type Database = {
           level?: string | null
           map_id?: string
           next_path?: string | null
-          personal_notes?: string | null
           position?: number
           status?: Database["public"]["Enums"]["reading_status"] | null
         }
@@ -152,6 +149,38 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      notes: {
+        Row: {
+          content: string
+          created_at: string | null
+          id: string
+          map_item_id: string
+          updated_at: string | null
+        }
+        Insert: {
+          content: string
+          created_at?: string | null
+          id?: string
+          map_item_id: string
+          updated_at?: string | null
+        }
+        Update: {
+          content?: string
+          created_at?: string | null
+          id?: string
+          map_item_id?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "notes_map_item_id_fkey"
+            columns: ["map_item_id"]
+            isOneToOne: false
+            referencedRelation: "map_items"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       profiles: {
         Row: {
