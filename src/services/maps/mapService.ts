@@ -20,3 +20,11 @@ export async function getMaps() {
 
 
 }
+
+export async function getMapById(mapId: string) {
+    const supabaseRepo = await getSupabaseRepo();
+
+    const maps = await supabaseRepo.getMapById(mapId)
+
+    return maps
+}
