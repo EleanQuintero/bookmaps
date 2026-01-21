@@ -4,11 +4,23 @@ import { getProcesedBooks } from "@/controllers/books/bookController"
 import { mapAIToDomain } from '@/lib/adapters/ai-adapter';
 import { BookInsert, MapItemInsert } from '@/domain/entities/models/models';
 import { PendingData } from '@/domain/entities/models/pendingData';
-import { getSupabaseRepo } from "@/infrastructure/repositories/SupabaseRepo"
+import { createMap } from '@/services/maps/mapService';
+import { createClient } from '@/lib/supabase/server';
 
 
-export async function processAndSaveMap(aiResponse: AIMapResponse, userId: string) {
+export async function processAndSaveMap(aiResponse: AIMapResponse) {
     const startTotal = performance.now();
+
+    // Obtener el usuario autenticado
+    const supabase = await createClient();
+    const { data: { user }, error: authError } = await supabase.auth.getUser();
+
+    if (authError || !user) {
+        console.error('❌ Error de autenticación:', authError);
+        return { success: false, error: "Usuario no autenticado" };
+    }
+
+    const userId = user.id;
 
     const startGoogleAPI = performance.now();
 
@@ -71,11 +83,11 @@ export async function processAndSaveMap(aiResponse: AIMapResponse, userId: strin
     }
 
 
-    const supabaseRepo = await getSupabaseRepo();
+
     const topic = aiResponse.topic
     const map_description = aiResponse.description
 
-    const map_id = await supabaseRepo.createMap(userId, topic, map_description, validResults);
+    const map_id = await createMap(userId, topic, map_description, validResults)
 
     const endTotal = performance.now();
     console.log(`⏱️ TOTAL FINAL: ${(endTotal - startTotal).toFixed(2)}ms`);

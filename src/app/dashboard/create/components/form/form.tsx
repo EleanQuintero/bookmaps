@@ -14,16 +14,20 @@ import { getBookMap } from "@/app/actions/IA/IA";
 import { processAndSaveMap } from "@/app/actions/maps/processAndSave";
 
 export const GenerateForm = () => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<{
+    type: "success" | "error" | null;
+    message: string;
+  }>({ type: null, message: "" });
+
   async function send(data: GeneratorValues) {
     const response = await getBookMap(data.theme);
-    const finalBooks = await processAndSaveMap(response, "userid-placeholder");
+    const finalBooks = await processAndSaveMap(response);
 
-    console.log(finalBooks);
-
-    const error = false;
+    const { error, success, mapId } = finalBooks;
 
     if (error) {
-      const result = { success: false, error: { message: "error" } };
+      const result = { success: false, error: { message: error } };
 
       return result;
     }
@@ -31,12 +35,6 @@ export const GenerateForm = () => {
     const result = { success: true, error: null };
     return result;
   }
-
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState<{
-    type: "success" | "error" | null;
-    message: string;
-  }>({ type: null, message: "" });
 
   const {
     control,

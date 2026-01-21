@@ -1,7 +1,8 @@
 "use server"
 
 import { getProcesedBooks } from "@/controllers/books/bookController"
-import { bookProcesed } from "@/domain/entities/maps/book"
+import { BookInsert } from "@/domain/entities/models/models"
+
 
 
 export async function getFullBook(titles: string[]) {
@@ -16,7 +17,7 @@ export async function getFullBook(titles: string[]) {
     console.log(`📚 Google API (Paralelo): ${(endGoogleAPI - startGoogleAPI).toFixed(2)}ms`)
 
     // Filtrar solo los exitosos
-    const validBooks = results.filter((book): book is bookProcesed => book !== null)
+    const validBooks = results.filter((book): book is BookInsert => book !== null)
 
     // Estrategia: ¿Qué hacer si algunos fallaron?
     const failedCount = results.length - validBooks.length
