@@ -1,4 +1,4 @@
-import { AppSidebar } from "@/app/dashboard/components/Sidebar";
+import { AppSidebar } from "@/app/dashboard/components/client/Sidebar";
 import { signOut, getUser } from "@/app/actions/auth/auth";
 
 export async function SidebarWithUser() {
