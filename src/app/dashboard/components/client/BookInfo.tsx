@@ -13,6 +13,7 @@ import { BookItemProps } from "../BookItem";
 import { useState, type ReactNode } from "react";
 import { BookStatus } from "@/domain/entities/models/models";
 import { useUpdateBookStatus } from "@/hooks/querys/use-update";
+import { useParams } from "next/navigation";
 
 interface BookInfoProps extends Omit<
   BookItemProps,
@@ -34,6 +35,8 @@ export function BookInfo({
   const [bookStatus, setBookStatus] = useState<BookStatus>(status);
 
   const { updateStatus, isPending } = useUpdateBookStatus();
+  const params = useParams();
+  const mapId = params.id as string;
 
   function handleToggleNotes() {
     setIsOpen(!isOpen);
@@ -51,7 +54,7 @@ export function BookInfo({
     const nextStatus = nextStatusMap[bookStatus];
 
     updateStatus(
-      { id: isbn, status: nextStatus },
+      { id: isbn, status: nextStatus, mapId },
       {
         onError: () => {
           setBookStatus(prevState);
