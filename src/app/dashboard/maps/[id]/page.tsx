@@ -7,7 +7,6 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { AppAvatar } from "@/app/dashboard/components/AppAvatar";
-import { BookStatus } from "@/domain/entities/models/models";
 import BookItem from "../../components/BookItem";
 
 interface params {
@@ -43,16 +42,6 @@ async function MapDisplay({ params }: params) {
   console.log(completedCount);
 
   const progress = Math.round((completedCount / map_items.length) * 100);
-  const getStatusColor = (status: BookStatus) => {
-    switch (status) {
-      case "completed":
-        return "text-green-500";
-      case "reading":
-        return "text-orange-500";
-      default:
-        return "text-muted-foreground";
-    }
-  };
 
   return (
     <div className="min-h-screen bg-background">
