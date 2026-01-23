@@ -85,7 +85,7 @@ export type Database = {
           map_id: string
           next_path: string | null
           position: number
-          status: Database["public"]["Enums"]["reading_status"] | null
+          status: Database["public"]["Enums"]["reading_status"]
         }
         Insert: {
           book_isbn: string
@@ -96,7 +96,7 @@ export type Database = {
           map_id: string
           next_path?: string | null
           position: number
-          status?: Database["public"]["Enums"]["reading_status"] | null
+          status?: Database["public"]["Enums"]["reading_status"]
         }
         Update: {
           book_isbn?: string
@@ -107,7 +107,7 @@ export type Database = {
           map_id?: string
           next_path?: string | null
           position?: number
-          status?: Database["public"]["Enums"]["reading_status"] | null
+          status?: Database["public"]["Enums"]["reading_status"]
         }
         Relationships: [
           {
