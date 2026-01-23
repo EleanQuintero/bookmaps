@@ -1,5 +1,6 @@
 import { getSupabaseRepo } from "@/infrastructure/repositories/SupabaseRepo";
 import { PendingData } from "@/domain/entities/models/pendingData";
+import { BookStatus } from "@/domain/entities/models/models";
 
 export async function createMap(userId: string, topic: string, map_description: string, validResults: PendingData[]) {
 
@@ -27,4 +28,12 @@ export async function getMapById(mapId: string) {
     const maps = await supabaseRepo.getMapById(mapId)
 
     return maps
+}
+
+export async function updateItemStatus(status: BookStatus, isbn: string) {
+    const supabaseRepo = await getSupabaseRepo();
+
+    const result = await supabaseRepo.updateBookStatus(status, isbn)
+
+    return result
 }
