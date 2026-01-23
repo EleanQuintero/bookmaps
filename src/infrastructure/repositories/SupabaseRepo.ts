@@ -1,6 +1,7 @@
 import { PendingData } from "@/domain/entities/models/pendingData";
 import { createClient } from "@/lib/supabase/server";
 import { MAP_DETAILS_SELECT, MapDetail, MapDetailCollection } from "../querys/getMapQuerys";
+import { BookStatus } from "@/domain/entities/models/models";
 
 type SupabaseClient = Awaited<ReturnType<typeof createClient>>
 
@@ -87,6 +88,27 @@ class SupabaseRepository {
         return { data: map, error: null }
 
     }
+
+    async updateBookStatus(newStatus: BookStatus, bookId: string) {
+
+        const { data, error } = await this.supabaseClient
+            .from('map_items')
+            .update({ status: newStatus })
+            .eq('book_isbn', bookId)
+            .select()
+
+
+        if (error) {
+            return {
+                data: null, errorMessage: error
+            }
+        }
+
+        return { data, error: null }
+
+    }
+
+
 
 }
 
