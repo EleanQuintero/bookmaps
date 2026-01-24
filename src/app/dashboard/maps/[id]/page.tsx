@@ -33,7 +33,7 @@ async function MapDisplay({ params }: params) {
 
   const { title, description, map_items } = data;
 
-  console.log(data);
+  console.log(typeof data);
 
   const completedCount = map_items.filter(
     (book) => book.status === "completed",
@@ -94,24 +94,15 @@ async function MapDisplay({ params }: params) {
             </Badge>
           </div>
 
-          {map_items.map((book) => (
+          {map_items.map((item) => (
             <Card
-              key={book.books.isbn}
-              className={`transition-all border-border/50 hover:border-primary/30 ${book.status === "completed" ? "bg-secondary/20" : "bg-card/50"}`}
+              key={item.books.isbn}
+              className={`transition-all border-border/50 hover:border-primary/30 ${item.status === "completed" ? "bg-secondary/20" : "bg-card/50"}`}
             >
               <CardContent className="p-0">
                 <div className="p-6">
                   <div className="flex gap-6">
-                    <BookItem
-                      key={book.books.isbn}
-                      title={book.books.title}
-                      author={book.books.author}
-                      coverurl={book.books.cover_url}
-                      description={book.books.description}
-                      status={book.status}
-                      position={book.position}
-                      isbn={book.books.isbn}
-                    />
+                    <BookItem map_id={item.id} item={item} />
                   </div>
                 </div>
               </CardContent>

@@ -9,17 +9,18 @@ import {
   Circle,
   Clock,
 } from "lucide-react";
-import { BookItemProps } from "../BookItem";
 import { useState, type ReactNode } from "react";
-import { BookStatus } from "@/domain/entities/models/models";
+import { Book, BookStatus } from "@/domain/entities/models/models";
 import { useUpdateBookStatus } from "@/hooks/querys/use-update";
 import { useParams } from "next/navigation";
 
-interface BookInfoProps extends Omit<
-  BookItemProps,
-  "size" | "coverurl" | "notes"
+interface BookInfoProps extends Pick<
+  Book,
+  "title" | "author" | "description" | "isbn"
 > {
   children: ReactNode;
+  status: BookStatus;
+  position: number;
 }
 
 export function BookInfo({
@@ -27,9 +28,9 @@ export function BookInfo({
   author,
   description,
   status,
-  position,
   children,
   isbn,
+  position,
 }: BookInfoProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [bookStatus, setBookStatus] = useState<BookStatus>(status);

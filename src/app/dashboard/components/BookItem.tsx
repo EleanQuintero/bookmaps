@@ -1,57 +1,41 @@
 import { Image as ImageIcon } from "lucide-react";
-import { BookStatus } from "@/domain/entities/models/models";
+import { Book, MapItem } from "@/domain/entities/models/models";
 import { BookInfo } from "./client/BookInfo";
 import { BookNotes } from "./client/BookNotes";
 
 export interface BookItemProps {
-  isbn: string;
-  title: string;
-  author: string | null;
-  coverurl: string | null;
-  status: BookStatus;
-  description: string | null;
-  position: number;
+  map_id: string;
+  item: MapItem;
 }
 
-type BookCoverCardProps = Omit<
-  BookItemProps,
-  "status" | "description" | "position" | "notes" | "isbn"
-> & {
+type BookCoverCardProps = Pick<Book, "author" | "title" | "cover_url"> & {
   size: "sm" | "md" | "lg";
 };
 
-function BookItem({
-  title,
-  author,
-  coverurl,
-  description,
-  position,
-  status,
-  isbn,
-}: BookItemProps) {
+function BookItem({ item }: BookItemProps) {
   return (
-    <div className="flex flex-row gap-x-3.5">
+    <div key={item.id} className="flex flex-row gap-x-3.5">
       <BookCoverCard
-        author={author}
-        title={title}
-        coverurl={coverurl}
+        author={item.books.author}
+        title={item.books.title}
+        cover_url={item.books.cover_url}
         size="lg"
       />
       <BookInfo
-        isbn={isbn}
-        author={author}
-        description={description}
-        position={position}
-        status={status}
-        title={title}
+        isbn={item.books.isbn}
+        author={item.books.author}
+        description={item.books.description}
+        position={item.position}
+        status={item.status}
+        title={item.books.title}
       >
-        <BookNotes initialNotes={[]} />
+        <BookNotes item_id={item.id} initialNotes={[]} />
       </BookInfo>
     </div>
   );
 }
 
-function BookCoverCard({ title, author, coverurl, size }: BookCoverCardProps) {
+function BookCoverCard({ title, author, cover_url, size }: BookCoverCardProps) {
   const sizeClasses = {
     sm: "w-16 h-20",
     md: "w-24 h-32",
@@ -76,8 +60,8 @@ function BookCoverCard({ title, author, coverurl, size }: BookCoverCardProps) {
           title={`${title} by ${author}`}
         >
           <div>
-            {coverurl ? (
-              <img src={coverurl} alt="" className=" w-52 h-52  " />
+            {cover_url ? (
+              <img src={cover_url} alt="" className=" w-52 h-52  " />
             ) : (
               <>
                 <ImageIcon

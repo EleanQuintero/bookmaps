@@ -1,7 +1,7 @@
 import { PendingData } from "@/domain/entities/models/pendingData";
 import { createClient } from "@/lib/supabase/server";
 import { MAP_DETAILS_SELECT, MapDetail, MapDetailCollection } from "../querys/getMapQuerys";
-import { BookStatus } from "@/domain/entities/models/models";
+import { Bookmap, BookStatus } from "@/domain/entities/models/models";
 
 type SupabaseClient = Awaited<ReturnType<typeof createClient>>
 
@@ -83,7 +83,7 @@ class SupabaseRepository {
             return { data: null, error: mapError }
         }
 
-        const map = data as MapDetail
+        const map = data as Bookmap
 
         return { data: map, error: null }
 
