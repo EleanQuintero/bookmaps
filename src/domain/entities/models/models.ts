@@ -21,16 +21,12 @@ export type DBNote = Database['public']['Tables']['notes']['Row']
 export type Note = Omit<DBNote, 'map_item_id'>
 
 // 3. ENTIDAD ITEM DE MAPA (La unión M:M)
-// Esta es la entidad más importante para tu UI.
-// Combina la info de la posición/notas con la info del libro (título, portada).
-export interface MapItemWithBook extends MapItemRow {
-    // Aquí "hidratamos" la relación. 
-    // Supabase nos devolverá el objeto libro dentro del item al hacer el join.
-    book: BookRow;
+export interface MapItem extends Pick<MapItemRow, 'id' | 'position' | 'status'> {
+    books: Pick<BookRow, 'isbn' | 'title' | 'author' | 'cover_url' | 'description'>;
+    notes: Note[];
 }
 
 // 4. ENTIDAD MAPA COMPLETO (Reemplaza a tu antiguo 'Bookmap')
-export interface LearningMap extends MapRow {
-    // En lugar de 'books: Book[]', ahora es más preciso:
-    items: MapItemWithBook[];
+export interface Bookmap extends Omit<MapRow, 'created_at'> {
+    map_items: MapItem[];
 }
