@@ -34,7 +34,6 @@ export function BookInfo({
 }: BookInfoProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [bookStatus, setBookStatus] = useState<BookStatus>(status);
-
   const { updateStatus, isPending } = useUpdateBookStatus();
   const params = useParams();
   const mapId = params.id as string;
