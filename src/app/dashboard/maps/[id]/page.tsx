@@ -8,16 +8,26 @@ import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { AppAvatar } from "@/app/dashboard/components/AppAvatar";
 import BookItem from "../../components/BookItem";
+import MapStoreProvider from "@/providers/map-store-provider";
 
 interface params {
   params: Promise<{ id: string }>;
 }
 
 async function MapPage({ params }: params) {
+  const { id } = await params;
+  const mapData = await getMapById(id);
+
+  if (!mapData || mapData.error) {
+    return <h1>Data not found</h1>;
+  }
+
   return (
-    <Suspense fallback={<MapsSkeleton />}>
-      <MapDisplay params={params} />
-    </Suspense>
+    <MapStoreProvider data={mapData.data}>
+      <Suspense fallback={<MapsSkeleton />}>
+        <MapDisplay params={params} />
+      </Suspense>
+    </MapStoreProvider>
   );
 }
 
@@ -94,20 +104,7 @@ async function MapDisplay({ params }: params) {
             </Badge>
           </div>
 
-          {map_items.map((item) => (
-            <Card
-              key={item.books.isbn}
-              className={`transition-all border-border/50 hover:border-primary/30 ${item.status === "completed" ? "bg-secondary/20" : "bg-card/50"}`}
-            >
-              <CardContent className="p-0">
-                <div className="p-6">
-                  <div className="flex gap-6">
-                    <BookItem map_id={item.id} item={item} />
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+          <BookItem />
         </div>
 
         {/* Completion Message */}
