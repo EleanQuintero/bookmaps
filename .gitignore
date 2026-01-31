@@ -42,9 +42,11 @@ next-env.d.ts
 
 #copilot
 /.ai
-copilot-instructions.md 
+copilot-instructions.md
+AGENTS.md
 
 
 #prompt
 
 /src/services/IA/maps/prompt.ts
+

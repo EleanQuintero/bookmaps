@@ -43,8 +43,6 @@ async function MapDisplay({ params }: params) {
 
   const { title, description, map_items } = data;
 
-  console.log(typeof data);
-
   const completedCount = map_items.filter(
     (book) => book.status === "completed",
   ).length;
