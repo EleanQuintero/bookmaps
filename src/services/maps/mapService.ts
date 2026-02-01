@@ -42,11 +42,9 @@ export async function addNote(content: string, map_item_id: string) {
 
     const supabaseRepo = await getSupabaseRepo()
 
-    const { status, error, data } = await supabaseRepo.addMapItemNote(content, map_item_id)
+    const { status, data } = await supabaseRepo.addMapItemNote(content, map_item_id)
 
-    if (error) {
-        throw new Error(error)
-    }
+
 
     return { status, data }
 
