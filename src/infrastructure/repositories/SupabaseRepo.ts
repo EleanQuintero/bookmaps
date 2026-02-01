@@ -1,7 +1,7 @@
 import { PendingData } from "@/domain/entities/models/pendingData";
 import { createClient } from "@/lib/supabase/server";
 import { MAP_DETAILS_SELECT, MapDetailCollection } from "../querys/getMapQuerys";
-import { Bookmap, BookStatus } from "@/domain/entities/models/models";
+import { Bookmap, BookStatus, DBNote } from "@/domain/entities/models/models";
 
 type SupabaseClient = Awaited<ReturnType<typeof createClient>>
 
@@ -108,19 +108,18 @@ class SupabaseRepository {
 
     }
 
-    async addMapItemNote(content: string, map_item_id: string) {
+    async addMapItemNote(content: string, map_item_id: string): Promise<{ status: number; data: DBNote }> {
         const { data, status, error } = await this.supabaseClient
             .from('notes')
             .insert({ content: content, map_item_id: map_item_id })
             .select()
             .single();
 
-
-        if (error) {
-            return { status: null, error: error.message }
+        if (error || !data) {
+            throw new Error(error?.message || 'Failed to add note')
         }
 
-        return { status: status, error: null, data }
+        return { status, data }
 
     }
 
