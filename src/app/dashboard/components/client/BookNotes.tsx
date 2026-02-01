@@ -5,8 +5,9 @@ import { FileText } from "lucide-react";
 import { Note } from "@/domain/entities/models/models";
 import { useState } from "react";
 import NotesDisplay from "../NotesDisplay";
-import { addItemNote } from "@/app/actions/maps/addItemNote";
-import { useParams } from "next/navigation";
+import { useAddNote } from "@/hooks/querys/use-add-note";
+import { toast } from "sonner";
+import { NoteContentScheme } from "@/domain/schemes/maps/notecontent-scheme";
 
 interface BookNotesProps {
   item_id: string;
@@ -16,24 +17,31 @@ interface BookNotesProps {
 export function BookNotes({ initialNotes, item_id }: BookNotesProps) {
   const [notes, setNotes] = useState<Note[]>(initialNotes);
   const [noteContent, setNoteContent] = useState("");
-  const params = useParams();
-  const map_id = params.id as string;
+  const { addNote, isPending } = useAddNote();
+  const maxCharacters = 250;
+  const charactersLeft = maxCharacters - noteContent.length;
 
   async function handleNote() {
-    const { status, data } = await addItemNote(noteContent, item_id, map_id);
+    const validContent = NoteContentScheme.safeParse({ content: noteContent });
 
-    if (!data) return;
-
-    if (status) {
-      setNoteContent("");
-      const newNote: Note = {
-        id: data?.id,
-        content: noteContent,
-        created_at: data.created_at,
-        updated_at: data.updated_at,
-      };
-      setNotes((prevNotes) => [...prevNotes, newNote]);
+    if (!validContent.success) {
+      const errorMessage = validContent.error.issues[0]?.message;
+      toast.error(errorMessage || "Invalid note content");
+      return;
     }
+    addNote(
+      { content: noteContent, item_id },
+      {
+        onSuccess: (newNote) => {
+          setNoteContent("");
+          setNotes((prevNotes) => [...prevNotes, newNote]);
+          toast.success("Note added successfully!");
+        },
+        onError: (error) => {
+          toast.error(`Failed to add note: ${error.message}`);
+        },
+      },
+    );
   }
 
   return (
@@ -45,15 +53,30 @@ export function BookNotes({ initialNotes, item_id }: BookNotesProps) {
         </label>
       </div>
       <textarea
-        className="w-full min-h-30 rounded-lg border border-input bg-background px-4 py-3 text-sm shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/20 focus-visible:border-primary/50 transition-all"
+        className="w-full min-h-30 rounded-lg border border-input bg-background px-4 py-3 text-sm shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/20 focus-visible:border-primary/50 transition-all overflow-hidden resize-none"
         placeholder="Add your thoughts, key takeaways, memorable quotes, or reflections..."
         onChange={(e) => setNoteContent(e.currentTarget.value)}
         value={noteContent}
+        maxLength={maxCharacters}
       />
-      <div className="flex justify-baseline items-center mt-3">
-        <Button onClick={handleNote} size="sm" className="shadow-sm">
+
+      <div className="flex flex-row gap-3 justify-baseline items-center mt-3">
+        <Button
+          disabled={
+            isPending || noteContent.trim() === "" || charactersLeft === 0
+          }
+          onClick={handleNote}
+          size="sm"
+          className={`shadow-sm ${charactersLeft === 0 ? "opacity-50 cursor-not-allowed bg-red-800 text-gray-500 " : ""}`}
+        >
           Save Note
         </Button>
+        <p className="text-[15px] font-bold">
+          Characters Left:{" "}
+          <span className={`${charactersLeft === 0 ? "text-red-800" : ""}`}>
+            {charactersLeft}
+          </span>
+        </p>
       </div>
 
       <div className="flex flex-col gap-x-10">
