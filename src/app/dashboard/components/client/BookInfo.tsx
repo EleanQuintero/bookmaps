@@ -126,11 +126,15 @@ export function BookInfo({
       </p>
 
       {/* Quick Stats */}
-      <div className="flex items-center gap-4 text-xs text-muted-foreground">
-        <div className="flex items-center gap-1">
+      <div className="flex  items-center gap-4 text-xs text-muted-foreground">
+        <div className="flex flex-row justify-center items-center gap-1 mb-2 ">
           <div
-            className={`h-2 w-2 rounded-full ${bookStatus === "completed" ? "bg-green-500" : bookStatus === "reading" ? "bg-orange-500" : "bg-muted-foreground"}`}
-          />
+            className={` flex flex-row h-2 w-2 rounded-full ${bookStatus === "completed" ? "bg-green-500" : bookStatus === "reading" ? "bg-orange-500" : "bg-muted-foreground"}`}
+          ></div>
+          <span className="capitalize font-bold">
+            {bookStatus.replace("-", " ") &&
+              bookStatus.replace("to_read", "Pending")}
+          </span>
         </div>
       </div>
       <div>{isOpen && children}</div>
