@@ -9,7 +9,7 @@ import {
   User2,
   LogOut,
   Home,
-  Library,
+  MapPlus,
 } from "lucide-react";
 
 import {
@@ -47,12 +47,12 @@ const platformItems = [
   {
     title: "New Map",
     url: "/dashboard/create",
-    icon: Map,
+    icon: MapPlus,
   },
   {
-    title: "Library ",
-    url: "/dashboard/library",
-    icon: Library,
+    title: "My maps",
+    url: "/dashboard/maps",
+    icon: Map,
   },
   {
     title: "Stats",
@@ -63,19 +63,6 @@ const platformItems = [
     title: "Settings",
     url: "/dashboard/settings",
     icon: Settings,
-  },
-];
-
-const projectItems = [
-  {
-    title: "Mapas en Progreso",
-    url: "/dashboard/in-progress",
-    icon: BookOpen,
-  },
-  {
-    title: "Mapas Completados",
-    url: "/dashboard/completed",
-    icon: Map,
   },
 ];
 
@@ -128,30 +115,8 @@ export function AppSidebar({ username, logout }: SidbarProps) {
                   >
                     <a href={item.url}>
                       <item.icon className="h-5 w-5" />
-                      <span>{item.title}</span>
+                      <span className="text-[0.85rem]">{item.title}</span>
                       <ChevronRight className="ml-auto h-4 w-4 opacity-50 group-data-[collapsible=icon]:hidden" />
-                    </a>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-
-        <SidebarGroup>
-          <SidebarGroupLabel>Proyectos</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {projectItems.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton
-                    asChild
-                    tooltip={item.title}
-                    className="hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition-colors"
-                  >
-                    <a href={item.url}>
-                      <item.icon className="h-5 w-5" />
-                      <span>{item.title}</span>
                     </a>
                   </SidebarMenuButton>
                 </SidebarMenuItem>

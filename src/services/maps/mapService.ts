@@ -51,3 +51,8 @@ export async function addNote(content: string, map_item_id: string) {
 
 
 }
+
+export async function deleteNote() {
+
+
+}

@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 import { FileText } from "lucide-react";
 import { Note } from "@/domain/entities/models/models";
 import { useState } from "react";
@@ -8,6 +9,7 @@ import NotesDisplay from "../NotesDisplay";
 import { useAddNote } from "@/hooks/querys/use-add-note";
 import { toast } from "sonner";
 import { NoteContentScheme } from "@/domain/schemes/maps/notecontent-scheme";
+import { deleteItemNote } from "@/app/actions/maps/deleteItemNote";
 
 interface BookNotesProps {
   item_id: string;
@@ -20,6 +22,7 @@ export function BookNotes({ initialNotes, item_id }: BookNotesProps) {
   const { addNote, isPending } = useAddNote();
   const maxCharacters = 250;
   const charactersLeft = maxCharacters - noteContent.length;
+  const router = useRouter();
 
   async function handleNote() {
     const validContent = NoteContentScheme.safeParse({ content: noteContent });
@@ -42,6 +45,12 @@ export function BookNotes({ initialNotes, item_id }: BookNotesProps) {
         },
       },
     );
+  }
+
+  async function handleDelete(noteId: string) {
+    await deleteItemNote(noteId);
+    setNotes((prevNotes) => prevNotes.filter((note) => note.id !== noteId));
+    router.refresh();
   }
 
   return (
@@ -89,6 +98,8 @@ export function BookNotes({ initialNotes, item_id }: BookNotesProps) {
           <>
             {notes.map((note, index) => (
               <NotesDisplay
+                id={note.id}
+                handleDelete={handleDelete}
                 key={note.id}
                 content={note.content}
                 createdAt={note.created_at}

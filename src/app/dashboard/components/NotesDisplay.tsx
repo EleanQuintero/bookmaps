@@ -1,13 +1,22 @@
+import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { X } from "lucide-react";
 
 interface NoteItemProps {
+  id: string;
   content: string;
   createdAt: string | null;
   index: number;
+  handleDelete: (noteId: string) => void;
 }
 
-function NoteItem({ content, createdAt, index }: NoteItemProps) {
+function NoteItem({
+  content,
+  createdAt,
+  index,
+  handleDelete,
+  id,
+}: NoteItemProps) {
   if (!createdAt) {
     return null;
   }
@@ -38,12 +47,13 @@ function NoteItem({ content, createdAt, index }: NoteItemProps) {
             {content}
           </p>
         </div>
-        <button
+        <Button
+          onClick={() => handleDelete(id)}
           className="flex-shrink-0 p-1.5 text-muted-foreground hover:text-destructive hover:bg-destructive/10 rounded transition-colors opacity-0 group-hover:opacity-100 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           aria-label={`Delete note ${index}`}
         >
           <X className="h-4 w-4" />
-        </button>
+        </Button>
       </div>
     </Card>
   );

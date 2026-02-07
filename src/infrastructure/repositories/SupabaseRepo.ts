@@ -123,7 +123,18 @@ class SupabaseRepository {
 
     }
 
+    async deleteItemNote(noteId: string) {
+        const { status, error } = await this.supabaseClient
+            .from('notes')
+            .delete()
+            .eq('id', noteId)
 
+        if (error) {
+            throw new Error(error?.message || 'Failed to add note')
+        }
+
+        return { status }
+    }
 
 }
 
