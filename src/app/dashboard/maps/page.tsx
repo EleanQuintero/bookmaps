@@ -19,6 +19,7 @@ import { Progress } from "@/components/ui/progress";
 import { Skeleton } from "@/components/ui/skeleton";
 import { getMapsData } from "@/controllers/maps/mapController";
 import { Suspense } from "react";
+import Link from "next/link";
 
 async function MapsPage() {
   return (
@@ -99,24 +100,27 @@ async function MyMaps() {
 
   return (
     <div className="container max-w-6xl mx-auto p-6 space-y-8">
+      <h1 className="text-3xl text-muted-foreground  font-bold tracking-tight">
+        My Learning Paths
+      </h1>
       <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="flex items-center gap-3">
           <div className="h-12 w-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
             <Library className="h-6 w-6" />
           </div>
-          <div>
-            <h1 className="text-3xl font-bold tracking-tight">
-              My Learning Paths
-            </h1>
+          <div className="flex flex-row items-center justify-center gap-2">
             <p className="text-muted-foreground mt-1">
               Manage and track your reading progress
             </p>
           </div>
         </div>
-        <Button className="gap-2">
+        <Link
+          href={"/dashboard/create"}
+          className="gap-2 bg-primary hover:bg-primary/90 text-primary-foreground inline-flex items-center px-4 py-2 rounded-md text-sm font-medium transition-colors  "
+        >
           <PlusSquare className="h-4 w-4" />
           Create New
-        </Button>
+        </Link>
       </header>
 
       {/* Search and Filters */}
