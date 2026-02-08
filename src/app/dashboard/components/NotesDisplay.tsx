@@ -49,6 +49,7 @@ function NoteItem({
         </div>
         <Button
           onClick={() => handleDelete(id)}
+          variant={"ghost"}
           className="flex-shrink-0 p-1.5 text-muted-foreground hover:text-destructive hover:bg-destructive/10 rounded transition-colors opacity-0 group-hover:opacity-100 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           aria-label={`Delete note ${index}`}
         >
