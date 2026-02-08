@@ -1,14 +1,23 @@
 "use server"
+import { deleteNote } from "@/services/maps/mapService"
+import { revalidatePath } from "next/cache"
+import { DBNote } from "@/domain/entities/models/models"
 
-import { getSupabaseRepo } from "@/infrastructure/repositories/SupabaseRepo"
+type ActionResult<T> =
+    | { success: true; data: T; status: number }
+    | { success: false; error: string; status?: number }
 
 
-export async function deleteItemNote(noteId: string) {
+export async function deleteItemNote(noteId: string): Promise<ActionResult<DBNote>> {
 
     try {
-        const supabaseRepo = await getSupabaseRepo()
-        const { status } = await supabaseRepo.deleteItemNote(noteId)
-        console.log('Note deleted successfully, status:', status)
+        const { status, data } = await deleteNote(noteId)
+        
+        // Revalidate entire dashboard section
+        revalidatePath('/dashboard', 'layout')
+        
+        return { success: true, status, data }
+
     } catch (error) {
         return {
             success: false,

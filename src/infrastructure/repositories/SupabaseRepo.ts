@@ -123,17 +123,23 @@ class SupabaseRepository {
 
     }
 
-    async deleteItemNote(noteId: string) {
-        const { status, error } = await this.supabaseClient
+    async deleteItemNote(noteId: string): Promise<{ status: number; data: DBNote }> {
+        const { data, status, error } = await this.supabaseClient
             .from('notes')
             .delete()
             .eq('id', noteId)
+            .select()
+            .single()
 
         if (error) {
-            throw new Error(error?.message || 'Failed to add note')
+            throw new Error(error?.message || 'Failed to delete note')
         }
 
-        return { status }
+        if (!data) {
+            throw new Error('Note not found or already deleted')
+        }
+
+        return { status, data }
     }
 
 }
