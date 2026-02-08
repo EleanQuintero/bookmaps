@@ -9,7 +9,7 @@ import NotesDisplay from "../NotesDisplay";
 import { useAddNote } from "@/hooks/querys/use-add-note";
 import { toast } from "sonner";
 import { NoteContentScheme } from "@/domain/schemes/maps/notecontent-scheme";
-import { deleteItemNote } from "@/app/actions/maps/deleteItemNote";
+import { useDeleteNote } from "@/hooks/querys/use-delete-note";
 
 interface BookNotesProps {
   item_id: string;
@@ -20,6 +20,7 @@ export function BookNotes({ initialNotes, item_id }: BookNotesProps) {
   const [notes, setNotes] = useState<Note[]>(initialNotes);
   const [noteContent, setNoteContent] = useState("");
   const { addNote, isPending } = useAddNote();
+  const { deleteNote } = useDeleteNote();
   const maxCharacters = 250;
   const charactersLeft = maxCharacters - noteContent.length;
   const router = useRouter();
@@ -48,9 +49,16 @@ export function BookNotes({ initialNotes, item_id }: BookNotesProps) {
   }
 
   async function handleDelete(noteId: string) {
-    await deleteItemNote(noteId);
-    setNotes((prevNotes) => prevNotes.filter((note) => note.id !== noteId));
-    router.refresh();
+    deleteNote(noteId, {
+      onSuccess: () => {
+        setNotes((prevNotes) => prevNotes.filter((note) => note.id !== noteId));
+        router.refresh();
+        toast.success("Note deleted successfully!");
+      },
+      onError: (error) => {
+        toast.error(`Failed to delete note: ${error.message}`);
+      },
+    });
   }
 
   return (
