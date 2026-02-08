@@ -52,7 +52,11 @@ export async function addNote(content: string, map_item_id: string) {
 
 }
 
-export async function deleteNote() {
+export async function deleteNote(noteId: string) {
 
+    const supabaseRepo = await getSupabaseRepo()
+    const { status, data } = await supabaseRepo.deleteItemNote(noteId)
+
+    return { status, data }
 
 }
