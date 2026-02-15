@@ -33,13 +33,18 @@ export function BookInfo({
   position,
 }: BookInfoProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
   const [bookStatus, setBookStatus] = useState<BookStatus>(status);
   const { updateStatus, isPending } = useUpdateBookStatus();
   const params = useParams();
   const mapId = params.id as string;
 
   function handleToggleNotes() {
-    setIsOpen(!isOpen);
+    setIsOpen((prev) => !prev);
+  }
+
+  function handleToggleExpanded() {
+    setIsExpanded((prev) => !prev);
   }
 
   function updateBookStatus() {
@@ -121,9 +126,18 @@ export function BookInfo({
       </div>
 
       {/* Book Description */}
-      <p className="text-sm text-muted-foreground leading-relaxed mb-4">
-        {description}
-      </p>
+      <div className="border-l-2 border-primary/30 pl-4 mb-4">
+        <p className={`book-prose italic ${!isExpanded ? "line-clamp-3" : ""}`}>
+          {description}
+        </p>
+        <button
+          onClick={handleToggleExpanded}
+          className="text-xs text-primary/70 hover:text-primary mt-1.5
+                     transition-colors font-medium font-sans cursor-pointer"
+        >
+          {isExpanded ? "Read less" : "Read more"}
+        </button>
+      </div>
 
       {/* Quick Stats */}
       <div className="flex  items-center gap-4 text-xs text-muted-foreground">
@@ -137,7 +151,7 @@ export function BookInfo({
           </span>
         </div>
       </div>
-      <div>{isOpen && children}</div>
+      <div>{isOpen ? children : null}</div>
     </div>
   );
 }
