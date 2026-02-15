@@ -87,3 +87,52 @@ body {
   }
 }
 
+/* Book description prose styles — inspired by @tailwindcss/typography */
+.book-prose {
+  font-family: var(--font-lora), Georgia, 'Times New Roman', serif;
+  font-size: 0.9375rem;           /* 15px — legible sin ser grande */
+  line-height: 1.75;
+  color: var(--color-muted-foreground);
+  letter-spacing: 0.01em;
+  max-width: 65ch;                /* línea óptima de lectura */
+}
+
+.book-prose::first-line {
+  color: var(--color-foreground);  /* primera línea más prominente */
+}
+
+/* rendering-content-visibility: defer offscreen card rendering */
+.book-card-item {
+  content-visibility: auto;
+  contain-intrinsic-size: 0 220px;
+}
+
+/* Book cover hover — GPU-accelerated */
+.book-cover {
+  overflow: hidden;
+  border-radius: 0.5rem;
+}
+
+.book-cover img {
+  transition: transform 0.4s ease, filter 0.4s ease;
+}
+
+.book-cover:hover img {
+  transform: scale(1.05);
+  filter: brightness(1.1);
+}
+
+/* Sutil glow dorado en hover */
+.book-cover::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 0.5rem;
+  box-shadow: inset 0 0 0 1px rgba(236, 166, 13, 0);
+  transition: box-shadow 0.4s ease;
+  pointer-events: none;
+}
+
+.book-cover:hover::after {
+  box-shadow: inset 0 0 0 1.5px rgba(236, 166, 13, 0.4);
+}

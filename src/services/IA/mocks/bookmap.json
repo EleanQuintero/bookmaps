@@ -1,60 +1,54 @@
 {
-  "name_of_the_map": "Ruta del Desarrollador: De Aprendiz a Profesional Intermedio",
+  "topic": "Ruta del Desarrollador: De Aprendiz a Profesional Intermedio",
   "description": "Un camino incremental que conecta la lógica, la limpieza de código, los patrones de diseño y la arquitectura moderna.",
   "books": [
     {
-      "order": 1,
       "title": "Grokking Algorithms",
       "author": "Aditya Bhargava",
       "level": "Básico",
-      "length": "Corta/Media (Totalmente visual)",
       "book_value": "Enseña a pensar en términos de eficiencia (Big O) y resolución de problemas sin lenguaje académico pesado.",
-      "next_path": "Establece la lógica necesaria antes de preocuparse por cómo organizar el código profesionalmente."
+      "next_path": "Establece la lógica necesaria antes de preocuparse por cómo organizar el código profesionalmente.",
+      "estimated_duration": "Corta/Media (Totalmente visual)"
     },
     {
-      "order": 2,
       "title": "The Pragmatic Programmer",
       "author": "Andrew Hunt & David Thomas",
       "level": "Básico-Intermedio",
-      "length": "Media",
       "book_value": "Introduce la filosofía del oficio: automatización, responsabilidad, prototipado y evitar la duplicidad (DRY).",
-      "next_path": "Tras entender la mentalidad del programador, el siguiente paso es aprender a escribir el código línea a línea con excelencia."
+      "next_path": "Tras entender la mentalidad del programador, el siguiente paso es aprender a escribir el código línea a línea con excelencia.",
+      "estimated_duration": "Media"
     },
     {
-      "order": 3,
       "title": "Clean Code",
       "author": "Robert C. Martin",
       "level": "Intermedio",
-      "length": "Media",
       "book_value": "El estándar de la industria para nombrar variables, estructurar funciones y mantener el código legible para humanos.",
-      "next_path": "Saber escribir funciones limpias es el bloque de construcción para el siguiente nivel: organizar esas funciones en estructuras más complejas."
+      "next_path": "Saber escribir funciones limpias es el bloque de construcción para el siguiente nivel: organizar esas funciones en estructuras más complejas.",
+      "estimated_duration": "Media"
     },
     {
-      "order": 4,
       "title": "Head First Design Patterns",
       "author": "Eric Freeman et al.",
       "level": "Intermedio",
-      "length": "Media (Formato dinámico)",
       "book_value": "Explica soluciones probadas a problemas comunes de software (Singleton, Observer, Strategy) de forma muy intuitiva.",
-      "next_path": "Con los patrones dominados, surge el problema de qué hacer con el código antiguo o desordenado que ya existe."
+      "next_path": "Con los patrones dominados, surge el problema de qué hacer con el código antiguo o desordenado que ya existe.",
+      "estimated_duration": "Media (Formato dinámico)"
     },
     {
-      "order": 5,
       "title": "Refactoring",
       "author": "Martin Fowler",
       "level": "Intermedio",
-      "length": "Media/Larga (Consultable)",
       "book_value": "Enseña cómo mejorar el diseño de un código existente sin cambiar su comportamiento, una habilidad crítica en entornos reales.",
-      "next_path": "Finalmente, pasamos de mejorar componentes aislados a entender cómo se estructura una aplicación completa."
+      "next_path": "Finalmente, pasamos de mejorar componentes aislados a entender cómo se estructura una aplicación completa.",
+      "estimated_duration": "Media/Larga (Consultable)"
     },
     {
-      "order": 6,
       "title": "Modern Software Engineering",
       "author": "David Farley",
       "level": "Intermedio-Avanzado",
-      "length": "Media",
       "book_value": "Unifica conceptos de CI/CD, iteración y diseño empírico, alejándose de dogmas antiguos para enfocarse en lo que funciona hoy.",
-      "next_path": "Culmina el aprendizaje conectando la técnica individual con el flujo de entrega de valor en equipos de alto rendimiento."
+      "next_path": "Culmina el aprendizaje conectando la técnica individual con el flujo de entrega de valor en equipos de alto rendimiento.",
+      "estimated_duration": "Media"
     }
   ]
 }

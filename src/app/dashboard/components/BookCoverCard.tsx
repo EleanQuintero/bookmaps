@@ -9,39 +9,32 @@ function BookCoverCard({ title, author, cover_url, size }: BookCoverCardProps) {
   const sizeClasses = {
     sm: "w-16 h-20",
     md: "w-24 h-32",
-    lg: "w-32 h-40",
-  };
-  const iconSizes = {
-    sm: "h-6 w-6",
-    md: "h-8 w-8",
-    lg: "h-10 w-10",
+    lg: "w-32 h-44",
   };
 
   return (
     <div className="shrink-0">
-      <div className="relative group/book">
-        <div
-          className={`
-          relative shrink-0 ${sizeClasses[size]} rounded-md 
-          bg-linear-to-br from-secondary to-secondary/50 
-          border border-border/50 flex items-center justify-center 
-          transition-all duration-300 cursor-pointer
+      <div
+        className={`
+          book-cover relative ${sizeClasses[size]}
+          bg-linear-to-br from-secondary to-secondary/50
+          border border-border/50
+          shadow-md shadow-black/20
+          transition-shadow duration-300
+          hover:shadow-lg hover:shadow-black/30
         `}
-          title={`${title} by ${author}`}
-        >
-          <div>
-            {cover_url ? (
-              <img src={cover_url} alt="" className=" w-52 h-52  " />
-            ) : (
-              <>
-                <ImageIcon
-                  className={`${iconSizes[size]} text-muted-foreground/40`}
-                />
-                <div className="absolute inset-0 bg-linear-to-t from-black/20 to-transparent rounded-md" />
-              </>
-            )}
+      >
+        {cover_url ? (
+          <img
+            src={cover_url}
+            alt={`Cover of ${title} by ${author}`}
+            className="absolute inset-0 w-full h-full object-cover rounded-lg"
+          />
+        ) : (
+          <div className="flex items-center justify-center h-full">
+            <ImageIcon className="h-8 w-8 text-muted-foreground/30" />
           </div>
-        </div>
+        )}
       </div>
     </div>
   );
