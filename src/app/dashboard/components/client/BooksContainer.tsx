@@ -15,7 +15,7 @@ export const BooksContainer = () => {
     <div className="flex flex-col gap-8">
       {map_items.map((item, index) => (
         <Card
-          className={`transition-all border-border/50 hover:border-primary/30 `}
+          className="book-card-item transition-all border-border/50 hover:border-primary/30"
           key={item.id}
         >
           <CardContent className="p-0">
