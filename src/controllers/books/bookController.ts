@@ -1,4 +1,5 @@
 import { getBooks } from "@/services/books/bookService";
+import { getBookCoverFallback } from "@/services/books/coverFallbackService";
 import { BookAPIRes } from "@/domain/entities/bookAPI/bookResponse";
 import { BookInsert } from "@/domain/entities/models/models";
 
@@ -32,6 +33,11 @@ export async function getProcesedBooks(titleToSearch: string): Promise<BookInser
             coverUrl = coverUrl.replace('http:', 'https:');
         }
 
+        // Fallback chain when Google Books has no cover image
+        if (!coverUrl) {
+            console.log(`🔍 Cover fallback for: "${info.title}"...`);
+            coverUrl = await getBookCoverFallback(isbnObj.identifier, info.title);
+        }
 
         const publishedDateStr = info.publishedDate ? String(info.publishedDate) : null;
 
