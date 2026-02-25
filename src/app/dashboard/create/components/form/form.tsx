@@ -5,41 +5,42 @@ import {
   type GeneratorValues,
 } from "@/app/dashboard/create/schema/generator.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Search, Sparkles } from "lucide-react";
+import { Loader2, Search, Sparkles } from "lucide-react";
 import { useState } from "react";
 import { useForm, type SubmitHandler } from "react-hook-form";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
+import { Progress } from "@/components/ui/progress";
 import InputForm from "@/app/dashboard/create/components/form/inputForm";
 import { getBookMap } from "@/app/actions/IA/IA";
 import { processAndSaveMap } from "@/app/actions/maps/processAndSave";
 
+type GenerationPhase = "idle" | "generating" | "verifying" | "saving" | "done";
+
+const PHASE_PROGRESS: Record<GenerationPhase, number> = {
+  idle: 0,
+  generating: 15,
+  verifying: 60,
+  saving: 90,
+  done: 100,
+};
+
+const PHASE_LABELS: Partial<Record<GenerationPhase, string>> = {
+  generating: "Asking the AI librarian…",
+  verifying: "Verifying your books…",
+  saving: "Building your map…",
+};
+
 export const GenerateForm = () => {
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState<{
-    type: "success" | "error" | null;
-    message: string;
-  }>({ type: null, message: "" });
+  const [phase, setPhase] = useState<GenerationPhase>("idle");
+  const router = useRouter();
 
-  async function send(data: GeneratorValues) {
-    const response = await getBookMap(data.theme);
-    const finalBooks = await processAndSaveMap(response);
-
-    const { error, success, mapId } = finalBooks;
-
-    if (error) {
-      const result = { success: false, error: { message: error } };
-
-      return result;
-    }
-
-    const result = { success: true, error: null };
-    return result;
-  }
+  const isSubmitting = phase !== "idle";
 
   const {
     control,
     handleSubmit,
-    reset,
     formState: { errors },
   } = useForm<GeneratorValues>({
     resolver: zodResolver(GeneratorSchema),
@@ -49,34 +50,29 @@ export const GenerateForm = () => {
   });
 
   const onSubmit: SubmitHandler<GeneratorValues> = async (data) => {
-    setIsSubmitting(true);
-    setSubmitStatus({ type: null, message: "" });
-
     try {
-      const result = await send(data);
+      setPhase("generating");
+
+      const aiResponse = await getBookMap(data.theme);
+
+      setPhase("verifying");
+
+      const result = await processAndSaveMap(aiResponse);
+
+      setPhase("saving");
 
       if (result.error) {
-        setSubmitStatus({
-          type: "error",
-          message: result.error.message,
-        });
-      } else {
-        setSubmitStatus({
-          type: "success",
-          message: "Bookmap creado revisa tus mapas",
-        });
-        reset();
-        setTimeout(() => {
-          setSubmitStatus({ type: null, message: "" });
-        }, 1500);
+        toast.error(result.error);
+        setPhase("idle");
+        return;
       }
-    } catch (error) {
-      setSubmitStatus({
-        type: "error",
-        message: "Error al enviar el mensaje. Por favor, intenta nuevamente.",
-      });
-    } finally {
-      setIsSubmitting(false);
+
+      setPhase("done");
+      toast.success("Your bookmap is ready!");
+      router.push(`/dashboard/maps/${result.mapId}`);
+    } catch {
+      toast.error("Something went wrong. Please try again.");
+      setPhase("idle");
     }
   };
 
@@ -102,15 +98,18 @@ export const GenerateForm = () => {
           {isSubmitting ? "Looking for books..." : "Call the librarian"}
         </Button>
 
-        {submitStatus.type && (
-          <div
-            className={`p-2 rounded-md ${
-              submitStatus.type === "success"
-                ? "bg-background text-green-800 border border-green-200"
-                : "bg-red-50 text-red-800 border border-red-200"
-            }`}
-          >
-            {submitStatus.message}
+        {phase !== "idle" && (
+          <div className="flex flex-col gap-2 animate-in fade-in duration-300 motion-reduce:animate-none">
+            <Progress
+              value={PHASE_PROGRESS[phase]}
+              className="transition-all duration-700 motion-reduce:transition-none"
+            />
+            {phase !== "done" && (
+              <p className="flex items-center gap-2 text-sm text-muted-foreground">
+                <Loader2 className="h-4 w-4 animate-spin motion-reduce:animate-none" />
+                {PHASE_LABELS[phase]}
+              </p>
+            )}
           </div>
         )}
       </div>
