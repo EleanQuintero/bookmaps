@@ -30,6 +30,15 @@ export async function getMapById(mapId: string) {
     return maps
 }
 
+export async function deleteMap(mapId: string, userId: string) {
+    const supabaseRepo = await getSupabaseRepo()
+
+    const { data, status } = await supabaseRepo.deleteMap(mapId, userId)
+
+    return { data, status }
+}
+
+
 export async function updateItemStatus(status: BookStatus, isbn: string) {
     const supabaseRepo = await getSupabaseRepo();
 
