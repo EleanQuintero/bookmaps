@@ -1,7 +1,7 @@
 import { PendingData } from "@/domain/entities/models/pendingData";
 import { createClient } from "@/lib/supabase/server";
 import { MAP_DETAILS_SELECT, MapDetailCollection } from "../querys/getMapQuerys";
-import { Bookmap, BookStatus, DBNote } from "@/domain/entities/models/models";
+import { Bookmap, BookStatus, DBNote, MapItem, MapRow } from "@/domain/entities/models/models";
 
 type SupabaseClient = Awaited<ReturnType<typeof createClient>>
 
@@ -140,6 +140,27 @@ class SupabaseRepository {
         }
 
         return { status, data }
+    }
+
+    async deleteMap(mapId: string, userId: string): Promise<{ status: number, data: MapRow }> {
+        const { data, status, error } = await this.supabaseClient
+            .from("maps")
+            .delete()
+            .eq("id", mapId)
+            .eq("user_id", userId)
+            .select()
+            .single()
+
+        if (error) {
+            throw new Error(error?.message || 'Failed to delete this map')
+        }
+
+        if (!data) {
+            throw new Error('Map not found or you do not have permission to delete it')
+        }
+
+        return { data, status }
+
     }
 
 }
