@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { AppAvatar } from "@/app/dashboard/components/AppAvatar";
 import BookItem from "../../components/BookItem";
 import MapStoreProvider from "@/providers/map-store-provider";
+import { DeleteMapButton } from "../../components/client/DeleteMapButton";
 
 interface params {
   params: Promise<{ id: string }>;
@@ -121,6 +122,19 @@ async function MapDisplay({ params }: params) {
             </CardContent>
           </Card>
         )}
+
+        {/* Danger Zone */}
+        <Card className="border-destructive/20 bg-destructive/5 mt-8">
+          <CardContent className="p-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <div>
+              <h2 className="font-semibold text-lg text-destructive mb-1">Danger Zone</h2>
+              <p className="text-muted-foreground text-sm">
+                Once you delete a map, there is no going back. Please be certain.
+              </p>
+            </div>
+            <DeleteMapButton mapId={id} />
+          </CardContent>
+        </Card>
       </main>
     </div>
   );
