@@ -1,5 +1,5 @@
 import { loginUser, newUser } from "@/domain/entities/users/user";
-import { signUp, signIn, getCurrentUserData, signOut } from "@/services/auth/authService";
+import { signUp, signIn, signInWithGoogle, getCurrentUserData, signOut } from "@/services/auth/authService";
 
 export async function createUser({ username, email, password }: newUser) {
     const result = await signUp({ username, email, password })
@@ -12,6 +12,11 @@ export async function signInUser({ email, password }: loginUser) {
 
 }
 
+
+export async function signInWithGoogleUser() {
+    const result = await signInWithGoogle()
+    return result
+}
 
 export async function signOutUser() {
     const error = await signOut()
