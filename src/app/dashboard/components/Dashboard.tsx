@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   Sparkles,
@@ -9,12 +12,22 @@ import {
   Star,
   ArrowRight,
 } from "lucide-react";
+import UsernameSetupModal from "./client/UsernameSetupModal";
 
 interface DashboardProps {
-  username: string;
+  username: string | null;
+  needsUsername: boolean;
 }
 
-function DashboardPage({ username }: DashboardProps) {
+function DashboardPage({ username: initialUsername, needsUsername }: DashboardProps) {
+  const [username, setUsername] = useState<string | null>(initialUsername);
+  const [showModal, setShowModal] = useState(needsUsername);
+
+  function handleUsernameSet(newUsername: string) {
+    setUsername(newUsername);
+    setShowModal(false);
+  }
+
   return (
     <section className="flex flex-col h-screen items-center justify-center overflow-hidden bg-primary-foreground text-primary ">
       <main className="">
@@ -27,7 +40,7 @@ function DashboardPage({ username }: DashboardProps) {
                 <span>Your Learning Dashboard</span>
               </div>
               <h1 className="text-4xl font-bold tracking-tight">
-                 {`Welcome Back ${username}`}
+                {username ? `Welcome Back, ${username}` : "Welcome to BookMap!"}
               </h1>
               <p className="text-muted-foreground text-lg">{}</p>
             </header>
@@ -140,6 +153,7 @@ function DashboardPage({ username }: DashboardProps) {
           </div>
         </div>
       </main>
+      {showModal && <UsernameSetupModal onUsernameSet={handleUsernameSet} />}
     </section>
   );
 }

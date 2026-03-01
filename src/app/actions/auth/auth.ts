@@ -1,5 +1,5 @@
 "use server"
-import { createUser, getCurrentUser, signInUser, signOutUser } from "@/controllers/auth/authController";
+import { createUser, getCurrentUser, signInUser, signInWithGoogleUser, signOutUser } from "@/controllers/auth/authController";
 import { loginUser, newUser } from "@/domain/entities/users/user";
 import { redirect } from "next/navigation";
 
@@ -23,6 +23,18 @@ export async function signUp({ username, email, password }: newUser) {
         return { success: false, error: result.error }
     }
 
+}
+
+export async function loginWithGoogle() {
+    const result = await signInWithGoogleUser()
+
+    if (result.error) {
+        return { success: false, error: result.error }
+    }
+
+    if (result.data?.url) {
+        redirect(result.data.url)
+    }
 }
 
 export async function signOut() {
