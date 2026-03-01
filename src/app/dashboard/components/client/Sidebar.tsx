@@ -34,7 +34,7 @@ import {
 import { Button } from "@/components/ui/button";
 
 interface SidbarProps {
-  username: string;
+  username: string | null;
   logout: () => void;
 }
 
