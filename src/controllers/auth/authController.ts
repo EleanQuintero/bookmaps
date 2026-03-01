@@ -1,5 +1,6 @@
 import { loginUser, newUser } from "@/domain/entities/users/user";
-import { signUp, signIn, getCurrentUserData, signOut } from "@/services/auth/authService";
+import { signUp, signIn, signInWithGoogle, getCurrentUserData, signOut } from "@/services/auth/authService";
+import { getProfile } from "@/services/profile/profileService";
 
 export async function createUser({ username, email, password }: newUser) {
     const result = await signUp({ username, email, password })
@@ -13,6 +14,11 @@ export async function signInUser({ email, password }: loginUser) {
 }
 
 
+export async function signInWithGoogleUser() {
+    const result = await signInWithGoogle()
+    return result
+}
+
 export async function signOutUser() {
     const error = await signOut()
 
@@ -25,10 +31,23 @@ export async function signOutUser() {
 export async function getCurrentUser() {
     const { data } = await getCurrentUserData()
 
-    const user = {
-        id: data.user?.id,
-        email: data.user?.email,
-        username: data.user?.user_metadata.username
+    if (!data.user) {
+        return null
     }
+
+    // Fetch username from the profiles table (source of truth).
+    // Google OAuth users will not have a username in user_metadata,
+    // so we must always read from the DB.
+    const { data: profile } = await getProfile(data.user.id)
+
+    const username = profile?.username ?? null
+
+    const user = {
+        id: data.user.id,
+        email: data.user.email ?? null,
+        username,
+        needsUsername: username === null || username === "",
+    }
+
     return user
 } 
