@@ -25,7 +25,7 @@ There is **no test setup** (no test runner, no test script, no test files).
 
 ## Tech stack (strict — do not introduce alternatives)
 
-Next.js 16 (App Router) · TypeScript strict (no `any`) · Supabase (Auth + Postgres + RLS) · Tailwind CSS 4 + shadcn/ui (new-york style, `src/components/ui/`) · Vercel AI SDK (`ai` v6) + `@ai-sdk/google` (Gemini) · Google Books API · TanStack Query · Zustand · Zod 4 · react-hook-form · sonner (toasts).
+Next.js 16 (App Router) · TypeScript strict (no `any`) · Supabase (Auth + Postgres + RLS) · Tailwind CSS 4 + shadcn/ui (new-york style, `src/components/ui/`) · Vercel AI SDK (`ai` v7) + `@ai-sdk/google` (Gemini) · Google Books API · TanStack Query · Zustand · Zod 4 · react-hook-form · sonner (toasts).
 
 ## Architecture — layered flow
 
@@ -46,13 +46,13 @@ Key nuance: **controllers are not always in the loop.** Mutations often go Actio
 - `proxy.ts` — Next.js 16's renamed `middleware.ts`. Delegates to `lib/supabase/proxy.ts` (`updateSession`): refreshes session cookies and redirects unauthenticated users to `/auth` (public paths: `/` and `/auth/*`).
 - `domain/` — all cross-layer types: `db/db_types.ts` (generated Supabase `Database` type, source of truth), `entities/models/models.ts` (app types derived from it + composite `Bookmap`/`MapItem`), `schemes/` (Zod: `aiMapResponseSchema` for Gemini output, `NoteContentScheme` for notes). Never redefine DTOs in pages/services.
 - `infrastructure/` — `SupabaseRepository` class (factory `getSupabaseRepo()`) + `querys/getMapQuerys.ts` (reusable `MAP_DETAILS_SELECT` select string with `QueryData`-derived types).
-- `services/` — business logic; external APIs are called inline here (no wrapper clients): Google Books via `fetch` in `books/bookService.ts`, Gemini via AI SDK in `IA/maps/bookMapGenService.ts`.
+- `services/` — business logic; external APIs are called inline here (no wrapper clients): Google Books via `fetch` in `books/bookService.ts` (checks `response.ok`, retries transient 5xx/429 with backoff, fails fast on 4xx), Gemini via AI SDK in `IA/maps/bookMapGenService.ts`. AI model ids live in `services/IA/config.ts` (`AI_MODELS` — single source of truth; never hardcode a model inside a service).
 - `stores/` + `providers/` — `useMapStore` (Zustand) holds the currently-viewed map. `MapStoreProvider` is not a React Context: it's a client component that pushes RSC-fetched data into the global store via `useEffect`. Only one map can be "active" at a time. `TanStackProvider` mounts React Query at the root layout.
 - `hooks/querys/` — thin `useMutation` wrappers around server actions (throw on `!result.success` so React Query sees errors).
 
 ### Bookmap generation flow (the core feature)
 
-1. `GenerateForm` → action `getBookMap` → `bookMapGenService.ts`: `generateText` with `google('gemini-2.0-flash')` and structured output validated by `aiMapResponseSchema`. Prompt in `services/IA/maps/prompt.ts`.
+1. `GenerateForm` → action `getBookMap` → `bookMapGenService.ts`: `generateText` with `google(...)` (model id from `services/IA/config.ts` → `gemini-3.5-flash`) and structured output validated by `aiMapResponseSchema`. Prompt in `services/IA/maps/prompt.ts`.
 2. Result → action `processAndSaveMap`: adapt via `lib/adapters/ai-adapter.ts` → `bookController.getProcesedBooks` verifies each book against Google Books (ISBN_13 > ISBN_10 > first identifier; **book discarded if no ISBN found** — never hallucinate books) → `mapService.createMap` → `SupabaseRepo.createMap` (insert `maps` → upsert `books` on `isbn` → insert `map_items`).
 3. Cover fallback chain (`coverFallbackService.ts`): Google Books thumbnail → Open Library covers (HEAD-checked) → placehold.co deterministic placeholder. Never returns null.
 
@@ -73,7 +73,10 @@ DB tables (`snake_case`): `profiles`, `maps`, `books`, `map_items`, `notes`. RLS
 - Naming: components `PascalCase`, functions/vars `camelCase`, DB tables `snake_case`. Event handlers prefixed `handle*`.
 - All async operations need loading and error states; user feedback via sonner toasts. Error layer: `src/components/error-boundaries/`, `src/types/errors.ts` (`ErrorCode`, `Result<T,E>`), `src/lib/error-logger.ts`.
 - Code comments and console logs are bilingual (EN/ES) — that's expected in this codebase.
+- Comments must be minimal, short, and precise — only what's strictly necessary. No verbose, redundant, or explanatory-essay comments.
 
 ## Environment variables
 
 `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `NEXT_PUBLIC_SITE_URL` (OAuth redirect), `GOOGLE_BOOKS_API_KEY`, `GOOGLE_GENERATIVE_AI_API_KEY` (read implicitly by `@ai-sdk/google`).
+
+**Gotcha (Google Books):** the **Books API must be enabled** in the Google Cloud project that owns `GOOGLE_BOOKS_API_KEY`. If it isn't, keyed requests fail with `401 "API keys are not supported by this API"` (not an obvious "key invalid" error), and every book silently gets discarded as "not found".
