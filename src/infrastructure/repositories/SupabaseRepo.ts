@@ -1,6 +1,6 @@
 import { PendingData } from "@/domain/entities/models/pendingData";
 import { createClient } from "@/lib/supabase/server";
-import { MAP_DETAILS_SELECT, MapDetailCollection } from "../querys/getMapQuerys";
+import { MAP_DETAILS_SELECT, MapDetailCollection, PUBLIC_MAP_SELECT, PublicMapDetail } from "../querys/getMapQuerys";
 import { Bookmap, BookStatus, DBNote, MapItem, MapRow } from "@/domain/entities/models/models";
 
 type SupabaseClient = Awaited<ReturnType<typeof createClient>>
@@ -84,6 +84,26 @@ class SupabaseRepository {
         }
 
         const map = data as Bookmap
+
+        return { data: map, error: null }
+
+    }
+
+    async getPublicMapById(mapId: string) {
+
+        const { data, error: mapError } = await this.supabaseClient
+            .from('maps')
+            .select(PUBLIC_MAP_SELECT)
+            .eq('id', mapId)
+            .eq('is_public', true) // app-layer guard: private map -> 0 rows, even for its own owner
+            .order('position', { foreignTable: 'map_items', ascending: true })
+            .single();
+
+        if (mapError) {
+            return { data: null, error: mapError }
+        }
+
+        const map = data as PublicMapDetail
 
         return { data: map, error: null }
 

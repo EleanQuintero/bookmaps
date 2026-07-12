@@ -30,6 +30,14 @@ export async function getMapById(mapId: string) {
     return maps
 }
 
+export async function getPublicMap(mapId: string) {
+    const supabaseRepo = await getSupabaseRepo();
+
+    const map = await supabaseRepo.getPublicMapById(mapId)
+
+    return map
+}
+
 export async function deleteMap(mapId: string, userId: string) {
     const supabaseRepo = await getSupabaseRepo()
 
