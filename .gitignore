@@ -55,3 +55,6 @@ AGENTS.md
 .claude
 
 /openspec
+
+# MCP server config (contains project-specific refs)
+.mcp.json
