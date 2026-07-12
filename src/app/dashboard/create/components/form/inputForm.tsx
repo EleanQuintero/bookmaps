@@ -1,17 +1,22 @@
-import type { Control, FieldError } from "react-hook-form";
+import type { Control, FieldError, FieldValues, Path } from "react-hook-form";
 import { Controller } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 
-interface Props {
-  name: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  control: Control<any>;
+interface Props<T extends FieldValues> {
+  name: Path<T>;
+  control: Control<T>;
   type?: string;
   error?: FieldError;
   placeholder?: string;
 }
 
-const InputForm = ({ name, control, type, error, placeholder }: Props) => {
+const InputForm = <T extends FieldValues>({
+  name,
+  control,
+  type,
+  error,
+  placeholder,
+}: Props<T>) => {
   return (
     <div className=" space-y-2 mb-4 flex flex-col ">
       <Controller
