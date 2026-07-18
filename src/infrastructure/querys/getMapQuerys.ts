@@ -10,6 +10,7 @@ export const MAP_DETAILS_SELECT = `
     user_id,
     title,
     description,
+    is_public,
     map_items (
         id,
         position,
@@ -39,3 +40,31 @@ const mapQueryBuilder = (client: SupabaseClient<Database>) =>
 // [0] extrae el tipo de un objeto individual (útil para .single())
 export type MapDetailCollection = QueryData<ReturnType<typeof mapQueryBuilder>>;
 export type MapDetail = MapDetailCollection[0];
+
+// 5. Select público (sin notes) — ruta /share/[id], defensa en profundidad
+// contra fugas de notas a nivel de query shape.
+export const PUBLIC_MAP_SELECT = `
+    id,
+    user_id,
+    title,
+    description,
+    is_public,
+    map_items (
+        id,
+        position,
+        status,
+        books (
+            isbn,
+            title,
+            author,
+            cover_url,
+            description
+        )
+    )
+`;
+
+const publicMapQueryBuilder = (client: SupabaseClient<Database>) =>
+    client.from('maps').select(PUBLIC_MAP_SELECT);
+
+export type PublicMapDetailCollection = QueryData<ReturnType<typeof publicMapQueryBuilder>>;
+export type PublicMapDetail = PublicMapDetailCollection[0];

@@ -12,6 +12,7 @@ const initialData: Bookmap = {
     title: '',
     description: '',
     user_id: '',
+    is_public: false,
     map_items: []
 }
 

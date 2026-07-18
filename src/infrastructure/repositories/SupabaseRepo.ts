@@ -1,6 +1,6 @@
 import { PendingData } from "@/domain/entities/models/pendingData";
 import { createClient } from "@/lib/supabase/server";
-import { MAP_DETAILS_SELECT, MapDetailCollection } from "../querys/getMapQuerys";
+import { MAP_DETAILS_SELECT, MapDetailCollection, PUBLIC_MAP_SELECT, PublicMapDetail } from "../querys/getMapQuerys";
 import { Bookmap, BookStatus, DBNote, MapItem, MapRow } from "@/domain/entities/models/models";
 
 type SupabaseClient = Awaited<ReturnType<typeof createClient>>
@@ -89,6 +89,26 @@ class SupabaseRepository {
 
     }
 
+    async getPublicMapById(mapId: string) {
+
+        const { data, error: mapError } = await this.supabaseClient
+            .from('maps')
+            .select(PUBLIC_MAP_SELECT)
+            .eq('id', mapId)
+            .eq('is_public', true) // app-layer guard: private map -> 0 rows, even for its own owner
+            .order('position', { foreignTable: 'map_items', ascending: true })
+            .single();
+
+        if (mapError) {
+            return { data: null, error: mapError }
+        }
+
+        const map = data as PublicMapDetail
+
+        return { data: map, error: null }
+
+    }
+
     async updateBookStatus(newStatus: BookStatus, bookId: string) {
 
         const { data, error } = await this.supabaseClient
@@ -140,6 +160,26 @@ class SupabaseRepository {
         }
 
         return { status, data }
+    }
+
+    async updateMapVisibility(mapId: string, userId: string, isPublic: boolean): Promise<{ id: string; is_public: boolean }> {
+        const { data, error } = await this.supabaseClient
+            .from('maps')
+            .update({ is_public: isPublic })
+            .eq('id', mapId)
+            .eq('user_id', userId) // ownership guard mirrors deleteMap
+            .select('id, is_public')
+            .single()
+
+        if (error) {
+            throw new Error(error.message || 'Failed to update map visibility')
+        }
+
+        if (!data) {
+            throw new Error('Map not found or you do not have permission')
+        }
+
+        return data
     }
 
     async deleteMap(mapId: string, userId: string): Promise<{ status: number, data: MapRow }> {
