@@ -162,6 +162,26 @@ class SupabaseRepository {
         return { status, data }
     }
 
+    async updateMapVisibility(mapId: string, userId: string, isPublic: boolean): Promise<{ id: string; is_public: boolean }> {
+        const { data, error } = await this.supabaseClient
+            .from('maps')
+            .update({ is_public: isPublic })
+            .eq('id', mapId)
+            .eq('user_id', userId) // ownership guard mirrors deleteMap
+            .select('id, is_public')
+            .single()
+
+        if (error) {
+            throw new Error(error.message || 'Failed to update map visibility')
+        }
+
+        if (!data) {
+            throw new Error('Map not found or you do not have permission')
+        }
+
+        return data
+    }
+
     async deleteMap(mapId: string, userId: string): Promise<{ status: number, data: MapRow }> {
         const { data, status, error } = await this.supabaseClient
             .from("maps")

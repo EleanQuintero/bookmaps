@@ -38,6 +38,14 @@ export async function getPublicMap(mapId: string) {
     return map
 }
 
+export async function setMapVisibility(mapId: string, userId: string, isPublic: boolean) {
+    const supabaseRepo = await getSupabaseRepo();
+
+    const data = await supabaseRepo.updateMapVisibility(mapId, userId, isPublic)
+
+    return data
+}
+
 export async function deleteMap(mapId: string, userId: string) {
     const supabaseRepo = await getSupabaseRepo()
 
