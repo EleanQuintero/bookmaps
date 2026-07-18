@@ -10,6 +10,7 @@ export const MAP_DETAILS_SELECT = `
     user_id,
     title,
     description,
+    is_public,
     map_items (
         id,
         position,
