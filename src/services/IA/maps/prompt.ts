@@ -29,7 +29,7 @@ const GOAL_FRAGMENT: Record<GeneratorConstraints['goal'], string> = {
     overview: 'Prioritize broad, accessible books that survey the topic without excessive depth.',
 };
 
-const LANG_FRAGMENT: Record<GeneratorConstraints['bookLanguage'], string> = {
+export const LANG_FRAGMENT: Record<GeneratorConstraints['bookLanguage'], string> = {
     en: 'English',
     es: 'Spanish',
 };
