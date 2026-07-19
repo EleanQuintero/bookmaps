@@ -19,7 +19,13 @@ export const aiMapResponseSchema = z.object({
     books: z.array(aiBookSchema).describe("The ordered list of books, from first to last"),
 });
 
-// 3. INFERENCIA DE TIPOS (La Magia)
+// 3. Esquema de reemplazos (repair loop) — envuelve libros re-propuestos por la IA
+export const aiReplacementResponseSchema = z.object({
+    books: z.array(aiBookSchema),
+});
+
+// 4. INFERENCIA DE TIPOS (La Magia)
 // Ya no necesitas escribir 'interface AIBookSuggestion' a mano. Zod lo hace por ti.
 export type AIBookSuggestion = z.infer<typeof aiBookSchema>;
 export type AIMapResponse = z.infer<typeof aiMapResponseSchema>;
+export type AIReplacementResponse = z.infer<typeof aiReplacementResponseSchema>;

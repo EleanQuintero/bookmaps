@@ -64,7 +64,7 @@ export const GenerateForm = () => {
 
       setPhase("verifying");
 
-      const result = await processAndSaveMap(aiResponse);
+      const result = await processAndSaveMap(aiResponse, constraints);
 
       setPhase("saving");
 
@@ -72,6 +72,10 @@ export const GenerateForm = () => {
         toast.error(result.error);
         setPhase("idle");
         return;
+      }
+
+      if (result.warning) {
+        toast.warning(result.warning);
       }
 
       setPhase("done");

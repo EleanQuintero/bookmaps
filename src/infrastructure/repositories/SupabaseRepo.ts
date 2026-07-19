@@ -38,9 +38,10 @@ class SupabaseRepository {
 
         // Insertamos todos los items
 
-        const itemsPayload = validResults.map(validResult => ({
+        const itemsPayload = validResults.map((validResult, index) => ({
             ...validResult.map_item,
-            map_id: map.id // Aquí inyectamos el ID del mapa recién creado
+            map_id: map.id, // Aquí inyectamos el ID del mapa recién creado
+            position: index + 1 // Renormalizado desde el orden final -> siempre contiguo 1..N
         }));
         const { error: itemsError } = await this.supabaseClient.from('map_items').insert(itemsPayload);
         if (itemsError) {
