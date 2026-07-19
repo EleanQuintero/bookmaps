@@ -5,6 +5,20 @@ import nextTs from "eslint-config-next/typescript";
 const eslintConfig = defineConfig([
   ...nextVitals,
   ...nextTs,
+  {
+    files: ["**/*.{ts,tsx}"],
+    rules: {
+      "no-restricted-syntax": [
+        "error",
+        {
+          selector:
+            'ImportDeclaration[source.value="react"] ImportNamespaceSpecifier',
+          message:
+            'Import the specific named React exports you use, not the whole namespace (e.g. import { type ComponentProps } from "react").',
+        },
+      ],
+    },
+  },
   // Override default ignores of eslint-config-next.
   globalIgnores([
     // Default ignores of eslint-config-next:
