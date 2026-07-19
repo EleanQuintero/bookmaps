@@ -99,7 +99,7 @@ export default function UsernameSetupModal({
         </DialogHeader>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 mt-2">
-          <div className="space-y-2 text-white ">
+          <div className="space-y-2 text-foreground ">
             <Label htmlFor="username">Username</Label>
             <Input
               id="username"
