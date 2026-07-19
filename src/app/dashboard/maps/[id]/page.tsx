@@ -60,7 +60,7 @@ async function MapDisplay({ params }: params) {
           <div className="flex flex-wrap items-center gap-4">
             <AppAvatar size="md" />
             <div className="flex-1 min-w-0">
-              <h1 className="text-2xl text-white font-bold leading-tight">
+              <h1 className="text-2xl text-foreground font-bold leading-tight">
                 {title}
               </h1>
               <p className="text-sm text-muted-foreground">Learning Path</p>
@@ -91,7 +91,7 @@ async function MapDisplay({ params }: params) {
         <div className="space-y-6">
           <div className="flex items-center gap-2">
             <BookOpen className="h-5 w-5 text-primary" />
-            <h2 className="text-xl text-white font-bold">Reading List</h2>
+            <h2 className="text-xl text-foreground font-bold">Reading List</h2>
             <Badge variant="secondary" className="ml-2">
               {completedCount} of {map_items.length} completed
             </Badge>

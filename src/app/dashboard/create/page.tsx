@@ -14,7 +14,7 @@ export default function BookmapCreator() {
   ];
 
   return (
-    <section className="flex flex-col h-screen items-center justify-center overflow-hidden bg-primary-foreground text-primary ">
+    <section className="flex flex-col h-screen items-center justify-center overflow-hidden bg-background text-foreground">
       <div className="container max-w-6xl mx-auto p-6 space-y-8">
         <header className="flex flex-col  items-center gap-3">
           <Hero

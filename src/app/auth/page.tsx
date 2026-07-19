@@ -14,7 +14,7 @@ export default function AuthPage() {
   const [islogin, setIsLogin] = useState(false);
 
   return (
-    <main className="flex flex-col items-center justify-center w-full flex-1 bg-background text-primary px-4">
+    <main className="flex flex-col items-center justify-center w-full flex-1 bg-background text-foreground px-4">
       <Card className="w-full max-w-md border-border/50 bg-card/50 backdrop-blur">
         <CardHeader className="space-y-1 pb-6">
           <CardTitle className="text-2xl font-bold text-center">

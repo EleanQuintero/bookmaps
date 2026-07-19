@@ -62,7 +62,7 @@ async function SharePage({ params }: SharePageProps) {
       <header className="border-b border-border bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60 sticky top-0 z-50">
         <div className="container mx-auto max-w-4xl px-4 py-6">
           <div className="flex items-center justify-between gap-3 mb-6">
-            <h1 className="text-2xl text-white font-bold">{title}</h1>
+            <h1 className="text-2xl text-foreground font-bold">{title}</h1>
             <div className="text-right shrink-0">
               <div className="text-3xl font-bold text-primary">{progress}%</div>
               <div className="text-xs text-muted-foreground">Complete</div>
@@ -92,7 +92,7 @@ async function SharePage({ params }: SharePageProps) {
         <div className="space-y-6">
           <div className="flex items-center gap-2">
             <BookOpen className="h-5 w-5 text-primary" />
-            <h2 className="text-xl text-white font-bold">Reading List</h2>
+            <h2 className="text-xl text-foreground font-bold">Reading List</h2>
             <Badge variant="secondary" className="ml-2">
               {completedCount} of {map_items.length} completed
             </Badge>

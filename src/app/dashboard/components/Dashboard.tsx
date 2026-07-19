@@ -29,7 +29,7 @@ function DashboardPage({ username: initialUsername, needsUsername }: DashboardPr
   }
 
   return (
-    <section className="flex flex-col h-screen items-center justify-center overflow-hidden bg-primary-foreground text-primary ">
+    <section className="flex flex-col h-screen items-center justify-center overflow-hidden bg-background text-foreground">
       <main className="">
         <div className="min-h-full flex flex-col items-center justify-center p-6">
           <div className="w-full max-w-4xl space-y-12">
@@ -39,8 +39,15 @@ function DashboardPage({ username: initialUsername, needsUsername }: DashboardPr
                 <Sparkles className="h-4 w-4" />
                 <span>Your Learning Dashboard</span>
               </div>
-              <h1 className="text-4xl font-bold tracking-tight">
-                {username ? `Welcome Back, ${username}` : "Welcome to BookMap!"}
+              <h1 className="font-display text-4xl font-extrabold tracking-tight">
+                {username ? (
+                  <>
+                    Welcome back,{" "}
+                    <span className="text-primary">{username}</span>
+                  </>
+                ) : (
+                  "Welcome to BookMap!"
+                )}
               </h1>
               <p className="text-muted-foreground text-lg">{}</p>
             </header>
