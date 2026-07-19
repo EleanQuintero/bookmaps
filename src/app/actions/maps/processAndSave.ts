@@ -17,7 +17,7 @@ export async function processAndSaveMap(aiResponse: AIMapResponse) {
 
     if (authError || !user) {
         console.error('❌ Error de autenticación:', authError);
-        return { success: false, error: "Usuario no autenticado" };
+        return { success: false, error: "You must be signed in to save a map." };
     }
 
     const userId = user.id;
@@ -79,7 +79,7 @@ export async function processAndSaveMap(aiResponse: AIMapResponse) {
     console.log('❌ Total fallidos:', failedCount);
 
     if (validResults.length === 0) {
-        return { success: false, error: "No se pudo obtener información de ningún libro." };
+        return { success: false, error: "We couldn't retrieve information for any of these books." };
     }
 
 
