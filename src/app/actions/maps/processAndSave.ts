@@ -1,7 +1,7 @@
 "use server"
 import { AIBookSuggestion, AIMapResponse } from '@/domain/schemes/maps/bookmap-scheme';
 import { DEPTH_TARGET, type GeneratorConstraints } from '@/domain/schemes/maps/generator-constraints-scheme';
-import { getProcesedBooks } from "@/controllers/books/bookController"
+import { getProcesedBooks, getTopicCandidates } from "@/controllers/books/bookController"
 import { mapAIToDomain } from '@/lib/adapters/ai-adapter';
 import { requestReplacements } from '@/services/IA/maps/repairService';
 import { BookInsert, MapItemInsert } from '@/domain/entities/models/models';
@@ -93,7 +93,9 @@ export async function processAndSaveMap(aiResponse: AIMapResponse, constraints: 
             const needed = target - valid.length;
             const usedTitles = valid.map(v => v.book.title);
 
-            const replacements = await requestReplacements(topic, needed, usedTitles, constraints);
+            // RAG rescue pool: closed, ISBN-verified candidates Gemini curates from (falls back to free-form proposal if empty)
+            const candidates = await getTopicCandidates(topic, { langRestrict: constraints.bookLanguage, excludeTitles: usedTitles });
+            const replacements = await requestReplacements(topic, needed, usedTitles, constraints, candidates);
             if (replacements.length === 0) break;
 
             const processed = await Promise.all(replacements.map(processBook));
