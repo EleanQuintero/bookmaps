@@ -1,5 +1,6 @@
 import type { GeneratorConstraints } from '@/domain/schemes/maps/generator-constraints-scheme';
 import { DEPTH_TARGET } from '@/domain/schemes/maps/generator-constraints-scheme';
+import type { BookCandidate } from '@/domain/entities/bookAPI/bookCandidate';
 
 export const systemPrompt = `You are an expert learning-path architect and bibliographic curator.
 Given a topic, you design ONE coherent reading path that takes a motivated learner from foundations to advanced mastery.
@@ -42,4 +43,30 @@ Learner profile:
 - Goal: ${GOAL_FRAGMENT[constraints.goal]}
 - Prefer book editions in: ${LANG_FRAGMENT[constraints.bookLanguage]}
 - Select exactly ${DEPTH_TARGET[constraints.depth]} books (this overrides the default 4-6 range).`;
+}
+
+// RAG rescue curation: Gemini selects/orders from a closed, ISBN-verified candidate pool. Never invents titles.
+export function buildCurationPrompt(
+    topic: string,
+    candidates: BookCandidate[],
+    needed: number,
+    constraints: GeneratorConstraints
+): string {
+    const candidateList = candidates
+        .map(c => `- "${c.title}" by ${c.author} (ISBN ${c.isbn})`)
+        .join('\n');
+
+    return `The reading path for "${topic}" needs ${needed} more book(s).
+
+Select and order EXACTLY ${needed} book(s) from the following CLOSED CANDIDATE LIST ONLY. Never invent a title or author outside this list. Use each selected candidate's exact title and author as given below.
+
+Candidates:
+${candidateList}
+
+Learner profile:
+- Reader level: ${LEVEL_FRAGMENT[constraints.readerLevel]}
+- Goal: ${GOAL_FRAGMENT[constraints.goal]}
+- Prefer book editions in: ${LANG_FRAGMENT[constraints.bookLanguage]}
+
+For each selected book, still provide level (exactly one of: Beginner, Intermediate, Advanced), book_value (why this book is the right next step at this point, naming specific concepts or skills), and next_path (the concrete skill or subtopic it unlocks).`;
 }
