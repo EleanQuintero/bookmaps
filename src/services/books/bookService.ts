@@ -12,7 +12,7 @@ export async function getBooks(title: string): Promise<BookAPIRes> {
     }
 
     const query = encodeURIComponent(title);
-    const url = `https://books.googleapis.com/books/v1/volumes?q=${query}&maxResults=2&key=${API_KEY}`
+    const url = `https://books.googleapis.com/books/v1/volumes?q=${query}&maxResults=2&country=US&key=${API_KEY}`
 
     for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
         const response = await fetch(url)
@@ -33,5 +33,5 @@ export async function getBooks(title: string): Promise<BookAPIRes> {
         throw new Error(`Google Books API error ${response.status}`);
     }
 
-    throw new Error(`Google Books API error para "${title}"`);
+    throw new Error(`Google Books API error for "${title}"`);
 }

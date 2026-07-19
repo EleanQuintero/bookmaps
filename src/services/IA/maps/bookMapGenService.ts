@@ -10,7 +10,7 @@ class MapGeneratorService {
 
         const result = await generateText({
             model: google(AI_MODELS.bookmapGeneration),
-            prompt: `Genera una ruta de aprendizaje incremental sobre: ${theme}`,
+            prompt: `Design the reading path for this topic: ${theme}`,
             system: systemPrompt,
             output: Output.object({ schema: aiMapResponseSchema })
 

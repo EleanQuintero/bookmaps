@@ -7,7 +7,7 @@ export async function getMapData(mapId: string) {
     const { data, error } = await getMapById(mapId)
 
     if (error) {
-        throw new Error(`Error obteniendo el mapa: ${error.message}`);
+        throw new Error(`Failed to load the map: ${error.message}`);
     }
     const map = transformMap(data)
 
@@ -21,7 +21,7 @@ export async function getMapsData() {
     const { data, error } = await getMaps()
 
     if (error) {
-        throw new Error(`Error obteniendo mapas: ${error.message}`);
+        throw new Error(`Failed to load maps: ${error.message}`);
     }
 
     const maps = transformMapsCollection(data)

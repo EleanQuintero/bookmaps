@@ -25,14 +25,14 @@ class SupabaseRepository {
             .single();
 
         if (mapError || !map) {
-            throw new Error(`Error creando el mapa en DB: ${mapError?.message || 'Sin detalles'}`);
+            throw new Error(`Failed to create map in DB: ${mapError?.message || 'No details'}`);
         }
 
         // Insertamos todos los libros en la DB
         const booksPayload = validResults.map(r => r.book);
         const { error: booksError } = await this.supabaseClient.from('books').upsert(booksPayload, { onConflict: 'isbn' });
         if (booksError) {
-            throw new Error(`Error insertando libros: ${booksError.message}`);
+            throw new Error(`Failed to insert books: ${booksError.message}`);
         }
         console.log('✅ Books insertados correctamente');
 
@@ -44,7 +44,7 @@ class SupabaseRepository {
         }));
         const { error: itemsError } = await this.supabaseClient.from('map_items').insert(itemsPayload);
         if (itemsError) {
-            throw new Error(`Error insertando items: ${itemsError.message}`);
+            throw new Error(`Failed to insert map items: ${itemsError.message}`);
         }
 
         return map.id

@@ -49,7 +49,7 @@ export async function getProcesedBooks(titleToSearch: string): Promise<BookInser
 
             // Metadatos
             title: info.title,
-            author: info.authors?.[0] ?? "Autor Desconocido", // Tomamos el primer autor
+            author: info.authors?.[0] ?? "Unknown Author", // Tomamos el primer autor
             description: info.description ?? null,
 
             // Campos opcionales / Nullables

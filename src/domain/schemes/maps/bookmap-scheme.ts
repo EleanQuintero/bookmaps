@@ -3,23 +3,20 @@ import { z } from 'zod';
 // 1. Esquema del LIBRO (Lo que la IA "piensa")
 export const aiBookSchema = z.object({
     // Eliminamos 'order' explícito. Confiaremos en el orden del array (índice 0 = posición 1)
-    title: z.string().describe("El título exacto del libro"),
-    author: z.string().describe("El autor principal"),
+    title: z.string().describe("The exact, commonly-cataloged title of the book"),
+    author: z.string().describe("The primary author"),
 
     // CAMPOS DE VALOR PEDAGÓGICO (Van a map_items)
-    level: z.string().describe("Nivel de dificultad (Ej: Principiante, Intermedio, Avanzado)"),
-    book_value: z.string().describe("¿Por qué este libro es esencial en este punto de la ruta?"),
-    next_path: z.string().describe("¿Qué habilidad desbloquea leer este libro?"),
-
-    // Opcional: Si quieres que la IA estime la longitud, aunque no sea exacto
-    estimated_duration: z.string().optional().describe("Tiempo estimado de lectura (Ej: '2 semanas')"),
+    level: z.string().describe("Difficulty level — exactly one of: Beginner, Intermediate, Advanced"),
+    book_value: z.string().describe("Why this specific book is essential at this point in the path"),
+    next_path: z.string().describe("The concrete skill or subtopic that reading this book unlocks"),
 });
 
 // 2. Esquema del MAPA (La respuesta completa)
 export const aiMapResponseSchema = z.object({
-    topic: z.string().describe("El tema reformulado o corregido"),
-    description: z.string().describe("Una breve introducción a esta ruta de aprendizaje"),
-    books: z.array(aiBookSchema).describe("La lista ordenada de libros desde el primero al último"),
+    topic: z.string().describe("The restated, well-scoped topic"),
+    description: z.string().describe("A brief introduction to this learning path"),
+    books: z.array(aiBookSchema).describe("The ordered list of books, from first to last"),
 });
 
 // 3. INFERENCIA DE TIPOS (La Magia)

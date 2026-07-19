@@ -103,7 +103,7 @@ export function AppSidebar({ username, logout }: SidbarProps) {
 
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Plataforma</SidebarGroupLabel>
+          <SidebarGroupLabel>Platform</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {platformItems.map((item) => (
@@ -132,7 +132,7 @@ export function AppSidebar({ username, logout }: SidbarProps) {
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <SidebarMenuButton
-                  tooltip="Usuario"
+                  tooltip="Account"
                   className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition-colors"
                 >
                   <User2 className="h-5 w-5" />
@@ -145,10 +145,10 @@ export function AppSidebar({ username, logout }: SidbarProps) {
                 className="w-[--radix-popper-anchor-width]"
               >
                 <DropdownMenuItem>
-                  <span>Mi Cuenta</span>
+                  <span>My Account</span>
                 </DropdownMenuItem>
                 <DropdownMenuItem>
-                  <span>Configuración</span>
+                  <span>Settings</span>
                 </DropdownMenuItem>
                 <DropdownMenuItem>
                   <LogOut className="mr-2 h-4 w-4" />
@@ -158,7 +158,7 @@ export function AppSidebar({ username, logout }: SidbarProps) {
                     variant="ghost"
                     className="p-0 h-1 text-start"
                   >
-                    <span>Cerrar sesión</span>
+                    <span>Sign out</span>
                   </Button>
                 </DropdownMenuItem>
               </DropdownMenuContent>
