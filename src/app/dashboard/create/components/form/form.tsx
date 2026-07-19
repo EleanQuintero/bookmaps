@@ -3,6 +3,7 @@
 import {
   GeneratorSchema,
   type GeneratorValues,
+  type GeneratorSubmitValues,
 } from "@/app/dashboard/create/schema/generator.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2, Search, Sparkles } from "lucide-react";
@@ -13,6 +14,7 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import InputForm from "@/app/dashboard/create/components/form/inputForm";
+import SelectField from "@/app/dashboard/create/components/form/SelectField";
 import { getBookMap } from "@/app/actions/IA/IA";
 import { processAndSaveMap } from "@/app/actions/maps/processAndSave";
 
@@ -42,18 +44,23 @@ export const GenerateForm = () => {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<GeneratorValues>({
+  } = useForm<GeneratorValues, unknown, GeneratorSubmitValues>({
     resolver: zodResolver(GeneratorSchema),
     defaultValues: {
       theme: "",
+      readerLevel: "novice",
+      goal: "practical",
+      bookLanguage: "en",
+      depth: "standard",
     },
   });
 
-  const onSubmit: SubmitHandler<GeneratorValues> = async (data) => {
+  const onSubmit: SubmitHandler<GeneratorSubmitValues> = async (data) => {
     try {
       setPhase("generating");
 
-      const aiResponse = await getBookMap(data.theme);
+      const { theme, ...constraints } = data;
+      const aiResponse = await getBookMap(theme, constraints);
 
       setPhase("verifying");
 
@@ -87,6 +94,48 @@ export const GenerateForm = () => {
           type="text"
           error={errors.theme}
         />
+
+        <div className="grid grid-cols-2 gap-2 mb-4">
+          <SelectField
+            name="readerLevel"
+            control={control}
+            label="Reader level"
+            options={[
+              { value: "novice", label: "Novice" },
+              { value: "intermediate", label: "Intermediate" },
+              { value: "advanced", label: "Advanced" },
+            ]}
+          />
+          <SelectField
+            name="goal"
+            control={control}
+            label="Goal"
+            options={[
+              { value: "practical", label: "Practical" },
+              { value: "academic", label: "Academic" },
+              { value: "overview", label: "Overview" },
+            ]}
+          />
+          <SelectField
+            name="bookLanguage"
+            control={control}
+            label="Book language"
+            options={[
+              { value: "en", label: "English" },
+              { value: "es", label: "Spanish" },
+            ]}
+          />
+          <SelectField
+            name="depth"
+            control={control}
+            label="Depth"
+            options={[
+              { value: "quick", label: "Quick" },
+              { value: "standard", label: "Standard" },
+              { value: "deep", label: "Deep" },
+            ]}
+          />
+        </div>
 
         <Button
           type="submit"
