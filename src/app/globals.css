@@ -3,61 +3,94 @@
 
 @custom-variant dark (&:is(.dark *));
 
-@theme {
-  --color-primary: #eca60d;
-  --color-primary-foreground: #000000;
-
-  --color-main: #000000;
-  --color-surface: #1e1e1e;
-
-  --color-background: #000000;
-  --color-foreground: #f5f5f5;
-
-  --color-text: #f5f5f5;
-  --color-text-muted: #bfbfbf;
-
-  --color-border: #2a2a2a;
-  --color-input: #2a2a2a;
-  --color-ring: #eca60d;
-
-  --color-card: #1e1e1e;
-  --color-card-foreground: #f5f5f5;
-  --color-popover: #1e1e1e;
-  --color-popover-foreground: #f5f5f5;
-  --color-secondary: #3c3c3c;
-  --color-secondary-foreground: #f5f5f5;
-  --color-muted: #3c3c3c;
-  --color-muted-foreground: #bfbfbf;
-  --color-accent: #3c3c3c;
-  --color-accent-foreground: #f5f5f5;
-  --color-destructive: #ef4444;
-  --color-destructive-foreground: #f5f5f5;
-
-  --color-success: #22c55e;
-  --color-warning: #eab308;
-  --color-error: #ef4444;
-
-  --radius: 0.5rem;
-}
-
-body {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-  background-color: var(--color-background);
-  color: var(--foreground);
-}
-
+/* ============================================================
+   LIGHT — default (:root). Paper cálido + tinta + dorado.
+   ============================================================ */
 :root {
-  --sidebar: #1c1c1e;
-  --sidebar-foreground: #f5f5f5;
+  --radius: 0.5rem;
+
+  --background: #faf8f3;
+  --foreground: #17130b;
+
+  --surface: #f1ece1;
+  --main: #faf8f3;
+
+  --card: #ffffff;
+  --card-foreground: #17130b;
+  --popover: #ffffff;
+  --popover-foreground: #17130b;
+
+  --primary: #eca60d;
+  --primary-foreground: #17130b;
+
+  --secondary: #f1ece1;
+  --secondary-foreground: #17130b;
+  --muted: #efe9dc;
+  --muted-foreground: #6e6656;
+  --accent: #efe9dc;
+  --accent-foreground: #17130b;
+
+  --text: #17130b;
+  --text-muted: #6e6656;
+
+  --border: #e5dece;
+  --input: #e5dece;
+  --ring: #eca60d;
+
+  --destructive: #dc2626;
+  --destructive-foreground: #ffffff;
+  --success: #16a34a;
+  --warning: #ca8a04;
+  --error: #dc2626;
+
+  --sidebar: #f4f0e8;
+  --sidebar-foreground: #17130b;
   --sidebar-primary: #eca60d;
-  --sidebar-primary-foreground: #1c1c1e;
-  --sidebar-accent: #2a2a2c;
-  --sidebar-accent-foreground: #f5f5f5;
-  --sidebar-border: #3a3a3c;
+  --sidebar-primary-foreground: #17130b;
+  --sidebar-accent: #eae3d3;
+  --sidebar-accent-foreground: #17130b;
+  --sidebar-border: #e5dece;
   --sidebar-ring: #eca60d;
 }
 
+/* ============================================================
+   DARK — .dark. Negro puro + dorado (paleta original).
+   ============================================================ */
 .dark {
+  --background: #000000;
+  --foreground: #f5f5f5;
+
+  --surface: #1e1e1e;
+  --main: #000000;
+
+  --card: #1e1e1e;
+  --card-foreground: #f5f5f5;
+  --popover: #1e1e1e;
+  --popover-foreground: #f5f5f5;
+
+  --primary: #eca60d;
+  --primary-foreground: #000000;
+
+  --secondary: #3c3c3c;
+  --secondary-foreground: #f5f5f5;
+  --muted: #3c3c3c;
+  --muted-foreground: #bfbfbf;
+  --accent: #3c3c3c;
+  --accent-foreground: #f5f5f5;
+
+  --text: #f5f5f5;
+  --text-muted: #bfbfbf;
+
+  --border: #2a2a2a;
+  --input: #2a2a2a;
+  --ring: #eca60d;
+
+  --destructive: #ef4444;
+  --destructive-foreground: #f5f5f5;
+  --success: #22c55e;
+  --warning: #eab308;
+  --error: #ef4444;
+
   --sidebar: #1c1c1e;
   --sidebar-foreground: #f5f5f5;
   --sidebar-primary: #eca60d;
@@ -68,7 +101,52 @@ body {
   --sidebar-ring: #eca60d;
 }
 
+/* ============================================================
+   Token → utility mapping (Tailwind v4).
+   ============================================================ */
 @theme inline {
+  --font-display: var(--font-bricolage);
+  --font-sans: var(--font-inter);
+  --font-mono: var(--font-plex-mono);
+  --font-serif: var(--font-lora);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
+  --color-main: var(--main);
+
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+
+  --color-text: var(--text);
+  --color-text-muted: var(--text-muted);
+
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-error: var(--error);
+
   --color-sidebar: var(--sidebar);
   --color-sidebar-foreground: var(--sidebar-foreground);
   --color-sidebar-primary: var(--sidebar-primary);
@@ -83,23 +161,29 @@ body {
   * {
     @apply border-border outline-ring/50;
   }
+  html {
+    /* Reserva el gutter de la scrollbar en ambos temas — evita el
+       shift horizontal al alternar light/dark. */
+    scrollbar-gutter: stable;
+  }
   body {
     @apply bg-background text-foreground;
+    font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
   }
 }
 
 /* Book description prose styles — inspired by @tailwindcss/typography */
 .book-prose {
-  font-family: var(--font-lora), Georgia, 'Times New Roman', serif;
-  font-size: 0.9375rem;           /* 15px — legible sin ser grande */
+  font-family: var(--font-lora), Georgia, "Times New Roman", serif;
+  font-size: 0.9375rem;
   line-height: 1.75;
   color: var(--color-muted-foreground);
   letter-spacing: 0.01em;
-  max-width: 65ch;                /* línea óptima de lectura */
+  max-width: 65ch;
 }
 
 .book-prose::first-line {
-  color: var(--color-foreground);  /* primera línea más prominente */
+  color: var(--color-foreground);
 }
 
 /* rendering-content-visibility: defer offscreen card rendering */
@@ -125,7 +209,7 @@ body {
 
 /* Sutil glow dorado en hover */
 .book-cover::after {
-  content: '';
+  content: "";
   position: absolute;
   inset: 0;
   border-radius: 0.5rem;
